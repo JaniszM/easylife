@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "User Data Schema",
+    "description": "Schema model for user configuration of the transfers.",
+    "type": "object",
+    "properties": {
+        "przelewy": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "nazwa": {
+                        "type": "string",
+                        "pattern": "^.*$",
+                        "description": "Nazwa identyfikująca konkretny przelew."
+                    },
+                    "aktywny": {
+                        "description": "Określa czy przelew jest aktywny.",
+                        "type": "boolean",
+                        "default": true
+                    },
+                    "tytuł": {
+                        "description": "Tytuł przelewu.",
+                        "type": "string"
+                    },
+                    "odbiorca": {
+                        "description": "Nazwa odbiorcy zdefiniowana w książce adresowej banku.",
+                        "type": "string"
+                    },
+                    "sms": {
+                        "description": "Określa czy jest włączona dodatkowa walidacja wymagająca podania kodu sms.",
+                        "type": "boolean",
+                        "default": true
+                    }
+                },
+                "required": [
+                    "nazwa",
+                    "tytuł",
+                    "odbiorca"
+                ]
+            }
+        }
+    }
+}

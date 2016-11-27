@@ -1,0 +1,2 @@
+selenium==3.0.1
+jsonschema==2.5.1

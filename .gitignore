@@ -1,0 +1,10 @@
+/build
+/dist
+/easylife.egg-info
+*.pyc
+.idea/
+easylife/logs/
+easylife/report/
+geckodriver*
+bank_config
+my_transfers.json
