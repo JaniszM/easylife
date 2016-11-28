@@ -11,7 +11,7 @@ TOC:
 - [Instalacja](#instalacja)
 - [Konfiguracja](#konfiguracja)
 - [Uruchomienie](#uruchomienie)
-- [Narzędzia / Skrypty](#narzędzia-skrypty)
+- [Narzędzia i Skrypty](#narzędzia-i-skrypty)
     - [Przelewy](#przelewy)
         - [Wymagania](#wymagania)
         - [Konfiguracja](#konfiguracja)
@@ -56,7 +56,7 @@ np.:
 easylife przelewy
 ```
 
-# Narzędzia / Skrypty
+# Narzędzia i Skrypty
 
 Poniżej znajduje się opis każdego z narzędzi/skryptów zaimplementowanych w **easylife**.
 

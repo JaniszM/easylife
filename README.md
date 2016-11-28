@@ -10,7 +10,7 @@ TOC:
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Running](#running)
-- [Tools / Scripts](#tools-scripts)
+- [Tools and Scripts](#tools-and-scripts)
     - [Transfers](#transfers)
         - [Requirements](#requirements)
         - [Configuration](#configuration)
@@ -40,7 +40,7 @@ e.g.:
 easylife transfers
 ```
 
-# Tools / Scripts
+# Tools and Scripts
 
 ## Transfers
 
