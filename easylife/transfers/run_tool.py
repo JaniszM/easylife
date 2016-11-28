@@ -9,18 +9,19 @@ from selenium import webdriver
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from jsonschema import validate
 
-from easylife import WORKING_DIR, MONTHS_TO_PL, MONTH, SCHEMA, get_logger, PLACEHOLDER_MONTH_NOW, \
+from easylife import get_logger, WORKING_DIR
+from easylife.transfers import MONTHS_TO_PL, MONTH, get_schema, PLACEHOLDER_MONTH_NOW, \
     PLACEHOLDER_MONTH_PREV, REPORT_DIR, USER_ACTION_TIMEOUT, WEB_TIMEOUT, BROWSER, DEFAULT_USER_FILENAME
 
 LOG = get_logger(__name__)
 
 USER_DATA_FILE = os.path.join(WORKING_DIR, DEFAULT_USER_FILENAME)
-CONFIG_FILE = os.path.join(WORKING_DIR, "bank_config")
-OK_SHOT = os.path.join(REPORT_DIR, 'success_shot_' + datetime.datetime.now().isoformat() + ".jpg")
-FAIL_SHOT = os.path.join(REPORT_DIR, 'exception_shot_' + datetime.datetime.now().isoformat() + ".jpg")
+CONFIG_FILE = os.path.join(WORKING_DIR, "transfers_config")
+OK_SHOT = os.path.join(REPORT_DIR, 'transfer_success_' + datetime.datetime.now().isoformat() + ".jpg")
+FAIL_SHOT = os.path.join(REPORT_DIR, 'transfer_error_' + datetime.datetime.now().isoformat() + ".jpg")
 
 
 def _store_config(data):
@@ -86,7 +87,7 @@ def load_user_transfers_data():
     if os.path.isfile(USER_DATA_FILE):
         with open(USER_DATA_FILE) as data_file:
             user_data = json.load(data_file, encoding="utf-8")
-        validate(user_data, SCHEMA)
+        validate(user_data, get_schema())
         return user_data
     else:
         LOG.warn("Nie znaleziono pliku danych użytkownika: " + USER_DATA_FILE)
@@ -130,7 +131,7 @@ class Transfer(object):
         self.driver.save_screenshot(FAIL_SHOT)
 
     def wait_for_element_and_get_it(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
-        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located((locator_type, locator)))
+        return WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
 
     def check_transfer_confirmation(self, amount_of_transfer, is_sms_confirmation=True):
         """
@@ -436,9 +437,8 @@ class ShowStuff(Frame):
 
             info = ""
             for key, val in transfers.iteritems():
-                info += u"Zamierzasz zaplacic {0}zł za '{1}', tytułem:\n{2}\n\n".format(unicode(val['kwota']),
-                                                                                        key,
-                                                                                        val[u'tytuł'])
+                info += u"Zamierzasz zaplacic {0}zł za '{1}', tytułem:\n{2}\n\n" \
+                    .format(unicode(val['kwota']), key, val[u'tytuł'])
 
             msg = Message(confirm, text=info, width=440)
             msg.pack()
@@ -448,11 +448,11 @@ class ShowStuff(Frame):
             btn_confirm.pack()
             btn_cancel.pack()
 
-    def go(self, rachunki, cb):
+    def go(self, bills, cb):
         cb.destroy()
         if self.makeTransfer is None:
             self.makeTransfer = Transfer()
-        self.makeTransfer.do_transfers(rachunki)
+        self.makeTransfer.do_transfers(bills)
 
 
 def main():

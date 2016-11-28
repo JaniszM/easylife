@@ -6,6 +6,6 @@
 easylife/logs/
 easylife/report/
 geckodriver*
-bank_config
+transfers_config
 my_transfers.json
 .pypirc
