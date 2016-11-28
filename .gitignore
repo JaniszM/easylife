@@ -3,8 +3,8 @@
 /easylife.egg-info
 *.pyc
 .idea/
-easylife/logs/
-easylife/report/
+/logs
+/report
 geckodriver*
 transfers_config
 my_transfers.json

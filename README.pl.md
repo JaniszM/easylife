@@ -163,19 +163,23 @@ easylife przelewy
 ### Użycie
 
 Po uruchomieniu i poprawnym skonfigurowaniu pojawi się ekran przelewów.
+
 1. Użytkownik podaje kwoty przelewów.
 2. Zatwierdza przyciskiem "Execute order 66".
 3. Pojawia się okno potwierdzenia z informacjami o przelewach. Użytkownik czyta uważnie informacje i potwierdza bądź odrzuca.
 4. Jeżeli w kroku 3 użytkownik potwierdził akcję, zostanie otworzona przeglądarka internetowa i przekierowanie do strony banku. Użytkownik loguje się do banku (akcja użytkownika).
-5a. Dla każdego z wybranych przelewów zostanie automatycznie wybrany odbiorca, wypełnione dane przelewu oraz wysłany przelew. Użytkownik potwierdza przelew kodem sms (akcja użytkownika), chyba, że przelew tego nie wymaga (patrz konfiguracja).
-5b. Następuje walidacja przelewu.
+5. a) Dla każdego z wybranych przelewów zostanie automatycznie wybrany odbiorca, wypełnione dane przelewu oraz wysłany przelew. Użytkownik potwierdza przelew kodem sms (akcja użytkownika), chyba, że przelew tego nie wymaga (patrz konfiguracja).
+    b) Następuje walidacja przelewu.
 6. Po wykonaniu wszystkich przelewów następuje automatyczne wylogowanie z banku oraz zamknięcie otwartego okna przeglądarki.
 
 ### Wsparcie dla użytkownika
 
 Narzędzie wykonuje szczegółowe logi oraz zrzuty ekranów. Wszystko po to by mieć pewność, że przelew został wykonany jak trzeba.
+
 Logi zapisywane są w pliku ```logs/easylife.log```.
+
 Zrzuty ekranów w plikach ```reports/transfer_error_{datetime}``` oraz ```reports/transfer_success_{datetime}```.
+
 W przypadku powodzenia zapisywany jest zrzut z ekranu potwierdzenia, w przypadku jakiegoś problemu zrzut ekranu z momentu, w którym problem wystąpił.
 
 Obecnie katalogiem logów i raportów jest katalog, w którym skrypt został wywołany, jak w przypadku konfiguracji.

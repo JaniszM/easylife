@@ -5,16 +5,21 @@ from easylife import VERSION
 
 here = path.abspath(path.dirname(__file__))
 
-# Get the long description from the relevant file
-with open(path.join(here, 'README.md')) as f:
-    long_description = f.read()
+
+def _readme():
+    """
+    Get the long description from the relevant file.
+    """
+    with open(path.join(here, 'README.md')) as f:
+        return f.read()
+
 
 setup(
     name='easylife',
     packages=['easylife', 'easylife/transfers'],
     version=VERSION,
     description='Group of useful scripts that makes your life easier by doing things for you.',
-    long_description=long_description,
+    long_description=_readme(),
     author='Janiszewski Marcin',
     author_email='janiszewski.m.a@gmail.com',
     license='MIT',
