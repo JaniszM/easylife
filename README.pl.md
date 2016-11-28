@@ -1,6 +1,6 @@
 Przeczytaj w innym języku: [English](README.md), [Polski](README.pl.md).
 
-Moduł grupujący różne użyteczne narzędzia/skrypty mające ułatwić Ci życie. Automatyzuje te same rzeczy, które wykonujesz nawet każdego dnia.
+Moduł grupujący różne użyteczne narzędzia/skrypty mające ułatwić Ci życie. Automatyzuje te same rzeczy, które wykonujesz każdego dnia.
 
 Dostępne języki interfejsu użytkownika oraz całego narzędzia **easylife**:
 - polski.
@@ -34,11 +34,11 @@ Zainstalować paczkę:
 pip install easylife
 ```
 
-Jeżeli masz jakieś problemy z instalacją, upewnij się, że masz najnowszą wersje ```pip```. Jeżeli nie to uaktualnij według instrukcji ```pip```.
+Jeżeli masz jakieś problemy z instalacją, upewnij się, że masz najnowszą wersje ```pip```. Jeżeli jej nie masz to uaktualnij według instrukcji ```pip```.
 
 # Konfiguracja
 
-Narzędzie korzysta z plików konfiguracji oraz różnych plików użytkownika. Pierwsze uruchomienie spowoduje utworzenie pliku konfiguracji danego skryptu w katalogu, z którego został wywołany **easylife**.
+Narzędzie korzysta z plików konfiguracji oraz różnych plików danych. Pierwsze uruchomienie spowoduje utworzenie pliku konfiguracji danego skryptu w katalogu, z którego został wywołany **easylife**.
 
 Narazie nie ma możliwości skonfigurowania stałego katalogu dla **easylife**. *Prace w toku.*
 Stwórz sobie jakiś katalog dla danych i odpalaj zawsze tam narzędzie.
@@ -65,13 +65,18 @@ Obecnie dostępne:
 
 ## Przelewy
 
+Bazuje na API **[selenium](http://docs.seleniumhq.org/)**. Oznacza to, że wykorzystuje strukturę strony HTTP hostowaną przez bank. W przypadku zmiany tej struktury przez bank *przelewy* mogą przestać odnajdywać właściwe elementy. **Jeżeli spotkasz się z tym problemem to załóż nowy 'issue'**.
+Zmiana będzie wprowadzona tak szybko jak to tylko możliwe.
+
 Posiada interfejs graficzny (GUI).
 Wykonuje szereg przelewów zdefiniowanych przez użytkownika.
 Waliduje wykonany przelew pod kątem kwoty oraz waluty. Jeżeli dane nie będą się zgadzać otrzymasz odpowiedni raport. Walidacja pozwala stwierdzić również obecność niektórych wirusów na twoim komputerze np.: podmieniających dane w formach danych strony banku na twojej przeglądarce.
-Narzędzie wyposarzone w **szczegółowe logi** oraz **zrzuty ekranów** dla każdej operacji. Więcej szczegółów tu [Wsparcie dla użytkownika](#wsparcie-dla-uzytkownika).
+Narzędzie wyposażone jest w **szczegółowe logi** oraz **zrzuty ekranów** dla każdej operacji. Więcej szczegółów tu [Wsparcie dla użytkownika](#wsparcie-dla-uzytkownika).
 
 Obecnie zakłada się, że okresem rozliczeniowym jest dany miesiąc. Z każdym nowym miesiącem rozpoczyna się nowy okres.
 Narzędzie **przelewy** nie wykona przelewu, który został już wykonany w danym okresie rozliczeniowym. Informacja o tym stanie podawana jest użytkownikowi.
+
+**UWAGA:** Ze względów bezpieczeństwa narzędzie nie przechowuje żadnych wrażliwych danych jak hasła do banku.
 
 Obecnie wspierane interfejsy banków:
 - mbank \(wersja polska\) **https://www.mbank.pl/indywidualny/**
@@ -94,11 +99,13 @@ Plik konfiguracji ```transfers_config```. W przypadku braku pliku zostanie utwor
 
 Opcje:
 
-- web_timeout: Definiuje czas oczekiwania (sekundy) skryptu na załadowanie strony.
+- *web_timeout*: Definiuje czas oczekiwania (sekundy) skryptu na załadowanie strony.
+
     Domyślna wartość to 10.
     Jeżeli twoje połączenie jest wolne bądź dostajesz błędy o nie odnalezionych elementach strony spróbuj zwiększyć tę wartość.
     
-- user_timeout: Definiuje czas oczekiwania (sekundy) skryptu na akcję użytkownika taką jak logowanie.
+- *user_timeout*: Definiuje czas oczekiwania (sekundy) skryptu na akcję użytkownika taką jak logowanie.
+
     Domyślna wartość to 90.
     
     Obecne akcje użytkownika:
@@ -107,13 +114,14 @@ Opcje:
     
     Jeżeli z jakiegoś powodu nie nadążasz czegoś wykonać zwiększ tę wartość.
     
-- browser: przeglądarka używana przez narzędzie.
+- *browser*: przeglądarka używana przez narzędzie.
+
     Domyślna wartość to "firefox".
     
-- payments: Informacje na temat wykonany przelewów w danym okresie rozliczeniowym.
+- *payments*: Informacje na temat wykonany przelewów w danym okresie rozliczeniowym.
     **NIE MODYFIKOWAĆ!!!**
     
-- month: miesięczny okres rozliczeniowy. Określa obecny miesiąc. W przypadku zmiany miesiąca rozpoczyna się nowy okres.
+- *month*: miesięczny okres rozliczeniowy. Określa obecny miesiąc. W przypadku zmiany miesiąca rozpoczyna się nowy okres.
     **NIE MODYFIKOWAĆ!!!**
 
 Plik danych ```my_transfers.json``` (WYMAGANY). Jest to plik, który definiuje dokładnie jakie przelewy i jak mają zostać wykonane. Jest zapisany w konwencji JSON oraz opisany przez schemę: **https://github.com/JaniszM/easylife/blob/master/easylife/user_data_schema.json**. W przypadku niezgodności ze schemą ```przelewy``` nie włączą się oraz zostanie zalogowany błąd. W przypadku braku pliku lista przelewów do realizacji będzie pusta.
@@ -144,11 +152,11 @@ Przykład pliku:
 }
 ```
 
-- nazwa: (WYMAGANE) definiuje nazwę przelewu, wyświetlana w GUI.
-- tytuł: (WYMAGANE) definiuje tytuł przelewu, wyświetlany w potwierdzeniu w GUI.
-- odbiorca: (WYMAGANE) definiuje nazwę odbiorcy zdefiniowaną wcześniej w książce adresowej banku, wyświetlany w GUI.
-- aktywny: Domyślnie: true. Jeżeli ustawione na false to przelew ten nie jest brany pod uwagę. Można w ten sposób wyłączyć stare przelewy.
-- sms: Domyślnie: true. Jeżeli ustawione na false to narzędzie nie będzie czekać na potwierdzenie kodem sms przez użytkownika.
+- *nazwa*: (Wymagane) definiuje nazwę przelewu, wyświetlana w GUI.
+- *tytuł*: (Wymagane) definiuje tytuł przelewu, wyświetlany w potwierdzeniu w GUI.
+- *odbiorca*: (Wymagane) definiuje nazwę odbiorcy zdefiniowaną wcześniej w książce adresowej banku, wyświetlany w GUI.
+- *aktywny*: (Domyślnie: true). Jeżeli ustawione na false to przelew ten nie jest brany pod uwagę. Można w ten sposób wyłączyć stare przelewy.
+- *sms*: (Domyślnie: true). Jeżeli ustawione na false to narzędzie nie będzie czekać na potwierdzenie kodem sms przez użytkownika.
 
 W polu *"tytuł"* istnieje możliwość użycia tak zwanych placeholderów. Obecnie dostępne:
 - $MIESIAC_TERAZ: podstawi nazwę obecnego miesiąca.
@@ -169,6 +177,7 @@ Po uruchomieniu i poprawnym skonfigurowaniu pojawi się ekran przelewów.
 3. Pojawia się okno potwierdzenia z informacjami o przelewach. Użytkownik czyta uważnie informacje i potwierdza bądź odrzuca.
 4. Jeżeli w kroku 3 użytkownik potwierdził akcję, zostanie otworzona przeglądarka internetowa i przekierowanie do strony banku. Użytkownik loguje się do banku (akcja użytkownika).
 5. a) Dla każdego z wybranych przelewów zostanie automatycznie wybrany odbiorca, wypełnione dane przelewu oraz wysłany przelew. Użytkownik potwierdza przelew kodem sms (akcja użytkownika), chyba, że przelew tego nie wymaga (patrz konfiguracja).
+
     b) Następuje walidacja przelewu.
 6. Po wykonaniu wszystkich przelewów następuje automatyczne wylogowanie z banku oraz zamknięcie otwartego okna przeglądarki.
 

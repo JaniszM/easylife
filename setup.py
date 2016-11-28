@@ -18,7 +18,8 @@ setup(
     name='easylife',
     packages=['easylife', 'easylife/transfers'],
     version=VERSION,
-    description='Group of useful scripts that makes your life easier by doing things for you.',
+    description='Group of useful scripts and tools that makes your life easier by doing things for you.'
+                ' Automates same things you can do every day.',
     long_description=_readme(),
     author='Janiszewski Marcin',
     author_email='janiszewski.m.a@gmail.com',
