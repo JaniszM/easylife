@@ -11,13 +11,13 @@ TOC:
 - [Instalacja](#instalacja)
 - [Konfiguracja](#konfiguracja)
 - [Uruchomienie](#uruchomienie)
-- [Narzędzia / Skrypty](#narzedzia-skrypty)
+- [Narzędzia / Skrypty](#narzędzia-skrypty)
     - [Przelewy](#przelewy)
         - [Wymagania](#wymagania)
         - [Konfiguracja](#konfiguracja)
         - [Uruchomienie](#uruchomienie)
-        - [Użycie](#uzycie)
-        - [Wsparcie dla użytkownika](#wsparcie-dla-uzytkownika)
+        - [Użycie](#użycie)
+        - [Wsparcie dla użytkownika](#wsparcie-dla-użytkownika)
 - [Pomoc i Ulepszenia](#pomoc-i-ulepszenia)
     
 # Wymagania
@@ -124,7 +124,7 @@ Opcje:
 - *month*: miesięczny okres rozliczeniowy. Określa obecny miesiąc. W przypadku zmiany miesiąca rozpoczyna się nowy okres.
     **NIE MODYFIKOWAĆ!!!**
 
-Plik danych ```my_transfers.json``` (WYMAGANY). Jest to plik, który definiuje dokładnie jakie przelewy i jak mają zostać wykonane. Jest zapisany w konwencji JSON oraz opisany przez schemę: **https://github.com/JaniszM/easylife/blob/master/easylife/user_data_schema.json**. W przypadku niezgodności ze schemą ```przelewy``` nie włączą się oraz zostanie zalogowany błąd. W przypadku braku pliku lista przelewów do realizacji będzie pusta.
+Plik danych ```my_transfers.json``` (Wymagany). Jest to plik, który definiuje dokładnie jakie przelewy i jak mają zostać wykonane. Jest zapisany w konwencji JSON oraz opisany przez schemę: **[user_data_schema.json](https://github.com/JaniszM/easylife/blob/master/easylife/transfers/user_data_schema.json)**. W przypadku niezgodności ze schemą ```przelewy``` nie włączą się oraz zostanie zalogowany błąd. W przypadku braku pliku lista przelewów do realizacji będzie pusta.
 Obecnie nie ma jeszcze możliwości zmiany nazwy tego pliku.
 
 Przykład pliku:
