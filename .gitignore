@@ -5,6 +5,8 @@
 .idea/
 /logs
 /report
+/easylife/logs
+/easylife/report
 geckodriver*
 transfers_config
 my_transfers.json

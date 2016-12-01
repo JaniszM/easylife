@@ -345,10 +345,15 @@ class ShowStuff(Frame):
                 y_pos += 30
                 label1 = Label(self, text=val['nazwa'])
                 label1.place(x=5, y=y_pos + 2)
+
                 entry = Entry(self, width=10)
+                if val.get('kwota') is not None:
+                    entry.insert(0, val['kwota'])
                 entry.place(x=160, y=y_pos)
+
                 label2 = Label(self, **make_good_caption(val['nazwa']))
                 label2.place(x=245, y=y_pos + 2)
+
                 self.widgets[val['nazwa']] = {
                     'label1': label1,
                     'entry': entry,
@@ -404,7 +409,7 @@ class ShowStuff(Frame):
                     # get cost of transfer from GUI widget, if not exist them must be inactive
                     amount = self.widgets[name]['entry'].get()
                     if amount:
-                        amount = float(amount)
+                        amount = float(amount.replace(",", "."))
                     else:
                         amount = 0
                 except KeyError:

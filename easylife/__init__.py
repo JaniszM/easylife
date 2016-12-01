@@ -1,12 +1,10 @@
 import os
 import logging
 
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 WORKING_DIR = ""
-
 LOG_DIR = os.path.join(WORKING_DIR, "logs")
-
 LOG_FILE = os.path.join(LOG_DIR, "easylife.log")
 
 

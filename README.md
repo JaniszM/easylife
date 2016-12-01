@@ -21,13 +21,23 @@ TOC:
     
 # Requirements
 
-- Python 2.7 (3.0 should work also, but not tested).
+- Python 2.7.
+- geckodriver.
 
 # Installation
 
+Install easylife:
 ```
 pip install easylife
 ```
+
+After installation et geckodriver:
+```
+sudo easylife get-geckodriver
+```
+
+If you have already geckodriver add it to PATH system environment or move to:
+`/usr/bin` in case of OSX or Linux system.
 
 # Configuration
 

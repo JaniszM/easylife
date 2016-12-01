@@ -31,6 +31,10 @@
                         "description": "Określa czy jest włączona dodatkowa walidacja wymagająca podania kodu sms.",
                         "type": "boolean",
                         "default": true
+                    },
+                    "kwota": {
+                        "description": "Określa domyślną kwotę jaka zostanie wprowadzona automatycznie do okienka danego przelewu.",
+                        "type": "string"
                     }
                 },
                 "required": [

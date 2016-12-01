@@ -5,6 +5,10 @@ Moduł grupujący różne użyteczne narzędzia/skrypty mające ułatwić Ci ży
 Dostępne języki interfejsu użytkownika oraz całego narzędzia **easylife**:
 - polski.
 
+Wspierane systemy operacyjne:
+- OSX
+- Linux
+
 TOC:
 
 - [Wymagania](#wymagania)
@@ -22,7 +26,7 @@ TOC:
     
 # Wymagania
 
-- Python 2.7 (3.0 również powinien działać, jeszcze nie przetestowano)
+- Python 2.7
 - geckodriver
 
 # Instalacja
@@ -35,6 +39,15 @@ pip install easylife
 ```
 
 Jeżeli masz jakieś problemy z instalacją, upewnij się, że masz najnowszą wersje ```pip```. Jeżeli jej nie masz to uaktualnij według instrukcji ```pip```.
+
+Potrzebujesz również geckodriver. Jeżeli masz już jeden to możesz spróbować go użyć, wystarczy, że będzie dodany do zmiennej systemowej PATH lub przeniesiony do:
+`/usr/bin` dla systemów OSX i Linux.
+
+Jeżeli nie masz geckodriver możesz spróbować doinstalować przez:
+```
+sudo easylife get-geckodriver
+```
+Wymagane są prawa admina ponieważ sterownik zostanie przeniesiony do katalogu `/usr/bin`, który zwykle nie daje dostępu z poziomu zwykłego użytkownika.
 
 # Konfiguracja
 
@@ -215,5 +228,4 @@ Planowane ulepszenia i poprawki:
     - dodatkowa opcjonalna walidacja numeru konta odbiorcy z książki adresowej oraz pliku danych,
     - konfiguracja ścieżki i nazwy pliku logów oraz zrzutów ekranu,
     - walidacja pół kwot w GUI,
-    - dodanie pola kwoty do przelewu w konfiguracji (zlecenie stałe),
     - wsparcie dla chrome, opera i safari.
