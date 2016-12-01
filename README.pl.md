@@ -48,6 +48,7 @@ Jeżeli nie masz geckodriver możesz spróbować doinstalować przez:
 sudo easylife get-geckodriver
 ```
 Wymagane są prawa admina ponieważ sterownik zostanie przeniesiony do katalogu `/usr/bin`, który zwykle nie daje dostępu z poziomu zwykłego użytkownika.
+*Jeżeli zobaczysz błąd: **WebDriverException: Message: 'geckodriver' executable needs to be in PATH.** to znaczy, że geckodriver nie jest poprawnie skonfigurowany.*
 
 # Konfiguracja
 

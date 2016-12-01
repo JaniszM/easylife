@@ -106,7 +106,7 @@ def write_to_config(transfer_name, status):
 
 class Transfer(object):
     # mbank locators
-    LOCATOR_LOGIN = "//a[@class='button ind']"
+    LOCATOR_LOGIN = "//a[contains(@class, 'button ind')]"
     LOCATOR_LOGOUT = "//i[@class='icon-white-logout']"
     LOCATOR_ADD_BOOK = "//li[@data-id='AddressBook']/a[@href='#/AddressBook']"
     LOCATOR_RECORDS_LIST = "//ul[@id='records']"

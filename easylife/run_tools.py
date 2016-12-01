@@ -15,7 +15,7 @@ GECKO_URL = "https://github.com/mozilla/geckodriver/releases/download/v{0}".form
 def _get_geckodriver():
     if os.name in ["posix"]:
         # OSX
-        gecko_path = "/data"
+        gecko_path = "/usr/bin"
         url = os.path.join(GECKO_URL, "geckodriver-v{0}-macos.tar.gz".format(GECKO_VER))
         # elif os.name in ['nt']:
         # windows
