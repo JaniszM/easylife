@@ -6,12 +6,12 @@ from easylife import VERSION
 here = path.abspath(path.dirname(__file__))
 
 
-def _readme():
-    """
-    Get the long description from the relevant file.
-    """
-    with open(path.join(here, 'README.md')) as f:
-        return f.read()
+# def _readme():
+#     """
+#     Get the long description from the relevant file.
+#     """
+#     with open(path.join(here, 'README.md')) as f:
+#         return f.read()
 
 
 setup(
@@ -20,14 +20,15 @@ setup(
     version=VERSION,
     description='Group of useful scripts and tools that makes your life easier by doing things for you.'
                 ' Automates same things you can do every day.',
-    long_description=_readme(),
+    # long_description=_readme(),
     author='Janiszewski Marcin',
     author_email='janiszewski.m.a@gmail.com',
     license='MIT',
     url='https://github.com/JaniszM/easylife',
     download_url='https://github.com/JaniszM/easylife/tarball/{0}'.format(VERSION),
     install_requires=["selenium==3.0.1",
-                      "jsonschema==2.5.1"],
+                      "jsonschema==2.5.1",
+                      "requests" == "2.12.3"],
     keywords=['easy', 'life', 'shorthand', 'quick', 'script', 'tool', 'useful',
               'bill', 'transfer', 'bank'],
     classifiers=[
