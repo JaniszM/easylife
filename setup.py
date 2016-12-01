@@ -28,7 +28,7 @@ setup(
     download_url='https://github.com/JaniszM/easylife/tarball/{0}'.format(VERSION),
     install_requires=["selenium==3.0.1",
                       "jsonschema==2.5.1",
-                      "requests" == "2.12.3"],
+                      "requests==2.12.3"],
     keywords=['easy', 'life', 'shorthand', 'quick', 'script', 'tool', 'useful',
               'bill', 'transfer', 'bank'],
     classifiers=[
