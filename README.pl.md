@@ -115,7 +115,7 @@ Opcje:
 
 - *web_timeout*: Definiuje czas oczekiwania (sekundy) skryptu na załadowanie strony.
 
-    Domyślna wartość to 10.
+    Domyślna wartość to 30.
     Jeżeli twoje połączenie jest wolne bądź dostajesz błędy o nie odnalezionych elementach strony spróbuj zwiększyć tę wartość.
     
 - *user_timeout*: Definiuje czas oczekiwania (sekundy) skryptu na akcję użytkownika taką jak logowanie.
@@ -230,3 +230,4 @@ Planowane ulepszenia i poprawki:
     - konfiguracja ścieżki i nazwy pliku logów oraz zrzutów ekranu,
     - walidacja pół kwot w GUI,
     - wsparcie dla chrome, opera i safari.
+    - możliwość oznaczenia w GUI, że przelew został wykonany (wykonano ręcznie bądź z jakiegoś powodu nie został oznaczony przez skrypt).

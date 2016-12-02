@@ -147,11 +147,11 @@ class Transfer(object):
         else:
             timeout = WEB_TIMEOUT
 
-        LOG.info("Oczekiwanie na potwierdzenie przelewu.")
+        LOG.info(u"Oczekiwanie na potwierdzenie przelewu.")
         try:
             status = self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_STATUS_OK, timeout=timeout).text
 
-            LOG.info("Weryfikacja potwierdzenia...")
+            LOG.info(u"Weryfikacja potwierdzenia...")
             if status != u"Przelew został zrealizowany":
                 raise Exception(u"Błędny status przelewu: " + status)
 
@@ -164,15 +164,15 @@ class Transfer(object):
                 raise Exception(u"Błędna waluta przelewu: " + status)
 
         except TimeoutException as err:
-            self._dump_exception("Nie potwierdzono wykonania przelewu. Sprawdź dokładnie logi czy rzeczywiście"
-                                 " nie zostął potwierdzony czy może mbnak zmienił frontend i nie znaleziono elementów.")
+            self._dump_exception(u"Upłynął czas oczekiwania: sprawdź dokładnie logi czy rzeczywiście przelew nie został "
+                                 u"wysłany poprawnie czy może mbnak zmienił frontend i nie znaleziono elementów.")
             LOG.error(err)
             raise err
 
-        LOG.info("Potwierdzono.")
+        LOG.info(u"Potwierdzono.")
 
     def mbank_login(self):
-        LOG.info("logowanie do mbanku...")
+        LOG.info(u"logowanie do mbanku...")
 
         if self.driver is None:
             self.__init__()
@@ -183,16 +183,16 @@ class Transfer(object):
         # wait here until user gives credentials
         try:
             self.wait_for_element_and_get_it(self.LOCATOR_ADD_BOOK, timeout=USER_ACTION_TIMEOUT)
-            LOG.info("... zalogowano.")
+            LOG.info(u"... zalogowano.")
         except TimeoutException as err:
-            self._dump_exception("Nie znaleziono elementow obecnych po zalogowaniu do mbanku."
-                                 " Upewnij sie ze nastapilo poprawne logowanie.")
+            self._dump_exception(u"Nie znaleziono elementów obecnych po zalogowaniu do mbanku."
+                                 u" Upewnij się, że nastąpiło poprawne logowanie.")
             self.driver.quit()
             self.driver = None
             raise err
 
     def mbank_logout(self):
-        LOG.info("Wylogowywanie z mbanku, sprawdź logi ;)")
+        LOG.info(u"Wylogowywanie z mbanku, sprawdź logi ;)")
         self.driver.find_element_by_xpath(self.LOCATOR_LOGOUT)
 
     def do_transfer(self, data):
@@ -221,11 +221,11 @@ class Transfer(object):
                     record.click()
 
                     # load transfer form
-                    LOG.info("Ładowanie formularza.")
+                    LOG.info(u"Ładowanie formularza.")
                     self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_DO, By.ID).click()
 
                     # enter data
-                    LOG.info("Wypełnianie danych.")
+                    LOG.info(u"Wypełnianie danych.")
                     web_el = self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_AMOUNT, By.ID)
                     web_el.clear()
                     web_el.send_keys(str(data['kwota']))
@@ -234,7 +234,7 @@ class Transfer(object):
                     web_el.send_keys(data[u'tytuł'])
 
                     # accept transfer operation
-                    LOG.info("Zatwierdzanie tranzakcji.")
+                    LOG.info(u"Zatwierdzanie tranzakcji.")
                     self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_SUBMIT).click()
 
                     # if sms confirmation code is disabled then send transfer instead of waiting for user action
@@ -250,8 +250,8 @@ class Transfer(object):
                     return True
             LOG.error(u"Nie odnaleziono rachunku '{0}' w książce adresowej.".format(name))
         except TimeoutException as err:
-            self._dump_exception("Nie odnaleziono jakiegoś elementu na stronie mbank :/")
-            LOG.error(err)
+            self._dump_exception(u"Upłynął czas oczekiwania: nie odnaleziono jakiegoś elementu na stronie mbank :/")
+            # LOG.error(err)
             # self.mbank_logout()
 
         return ok
@@ -312,7 +312,7 @@ class ShowStuff(Frame):
                 }
             else:
                 return {
-                    'text': u"Nie zapłaciłeś w tym miesiącu!!!",
+                    'text': u"Nie zapłacono!!!",
                     'fg': "#cc0000"
                 }
 
@@ -448,8 +448,8 @@ class ShowStuff(Frame):
             msg = Message(confirm, text=info, width=440)
             msg.pack()
 
-            btn_confirm = Button(confirm, text="Idź do banku", command=lambda: self.go(transfers, confirm))
-            btn_cancel = Button(confirm, text="Nie chcę!!!", command=confirm.destroy)
+            btn_confirm = Button(confirm, text=u"Idź do banku", command=lambda: self.go(transfers, confirm))
+            btn_cancel = Button(confirm, text=u"Nie chcę!!!", command=confirm.destroy)
             btn_confirm.pack()
             btn_cancel.pack()
 

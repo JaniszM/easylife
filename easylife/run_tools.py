@@ -60,8 +60,12 @@ def main():
         transfers_main()
     elif tool == "help":
         print("\neasylife [opcja]|[narzędzie]:"
-              "\nDostępne opcje:\n\thelp - wyświetla pomoc,\n\tversion - wyświetla wersję programu.\n\n"
-              "Dostępne narzędzia:\n\tprzelewy - uruchamia narzędzie 'przelewy'.\n")
+              "\nDostępne opcje:"
+              "\n\thelp - wyświetla pomoc,"
+              "\n\tversion - wyświetla wersję programu."
+              "\n\tget-geckodriver - pobiera i przygotowuje geckodriver do użycia.\n\n"
+              "Dostępne narzędzia:"
+              "\n\tprzelewy - uruchamia narzędzie 'przelewy'.\n")
     elif tool == "version":
         print("\neasylife v{0}\nCopyright 2016 by Marcin Janiszewski, janiszewski.m.a@gmail.com\n".format(VERSION))
     elif tool == "get-geckodriver":
