@@ -31,7 +31,7 @@ PLACEHOLDER_MONTH_PREV = u"$MIESIAC_POPRZ"
 
 MONTH = datetime.datetime.now().strftime("%B")
 
-USER_ACTION_TIMEOUT = 90
+USER_ACTION_TIMEOUT = 120
 WEB_TIMEOUT = 30
 BROWSER = "firefox"
 

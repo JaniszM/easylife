@@ -1,10 +1,11 @@
+# coding=utf-8
+
 from os import path
 from setuptools import setup
 
 from easylife import VERSION
 
 here = path.abspath(path.dirname(__file__))
-
 
 # def _readme():
 #     """

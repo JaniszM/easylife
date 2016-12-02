@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as ec
 from jsonschema import validate
 
 from easylife import get_logger, WORKING_DIR
+from easylife.utils import convert_to_utf8
 from easylife.transfers import MONTHS_TO_PL, MONTH, get_schema, PLACEHOLDER_MONTH_NOW, \
     PLACEHOLDER_MONTH_PREV, REPORT_DIR, USER_ACTION_TIMEOUT, WEB_TIMEOUT, BROWSER, DEFAULT_USER_FILENAME
 
@@ -131,7 +132,9 @@ class Transfer(object):
         self.driver.save_screenshot(FAIL_SHOT)
 
     def wait_for_element_and_get_it(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
-        return WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
+        return WebDriverWait(self.driver, timeout).until(
+            ec.presence_of_element_located((locator_type, locator)) and
+            ec.visibility_of_element_located((locator_type, locator)))
 
     def check_transfer_confirmation(self, amount_of_transfer, is_sms_confirmation=True):
         """
@@ -149,23 +152,26 @@ class Transfer(object):
 
         LOG.info(u"Oczekiwanie na potwierdzenie przelewu.")
         try:
-            status = self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_STATUS_OK, timeout=timeout).text
+            status = convert_to_utf8(
+                self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_STATUS_OK, timeout=timeout).text)
 
             LOG.info(u"Weryfikacja potwierdzenia...")
             if status != u"Przelew został zrealizowany":
                 raise Exception(u"Błędny status przelewu: " + status)
 
-            status = self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_STATUS_AMOUNT).text
-            if unicode(amount_of_transfer) != status.replace(u",", u"."):
+            status = convert_to_utf8(self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_STATUS_AMOUNT).text).\
+                replace(u",", u".").replace(u" ", u"")
+            if amount_of_transfer != float(status):
                 raise Exception(u"Błędna kwota potwierdzenia przelewu: " + status)
 
-            status = self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_STATUS_CURR).text
+            status = convert_to_utf8(self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_STATUS_CURR).text)
             if u"PLN" != status:
                 raise Exception(u"Błędna waluta przelewu: " + status)
 
         except TimeoutException as err:
-            self._dump_exception(u"Upłynął czas oczekiwania: sprawdź dokładnie logi czy rzeczywiście przelew nie został "
-                                 u"wysłany poprawnie czy może mbnak zmienił frontend i nie znaleziono elementów.")
+            self._dump_exception(
+                u"Upłynął czas oczekiwania: sprawdź dokładnie logi czy rzeczywiście przelew nie został "
+                u"wysłany poprawnie czy może mbnak zmienił frontend i nie znaleziono elementów.")
             LOG.error(err)
             raise err
 
@@ -249,7 +255,7 @@ class Transfer(object):
                     self.driver.save_screenshot(OK_SHOT)
                     return True
             LOG.error(u"Nie odnaleziono rachunku '{0}' w książce adresowej.".format(name))
-        except TimeoutException as err:
+        except TimeoutException:
             self._dump_exception(u"Upłynął czas oczekiwania: nie odnaleziono jakiegoś elementu na stronie mbank :/")
             # LOG.error(err)
             # self.mbank_logout()

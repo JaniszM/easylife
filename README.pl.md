@@ -120,7 +120,7 @@ Opcje:
     
 - *user_timeout*: Definiuje czas oczekiwania (sekundy) skryptu na akcję użytkownika taką jak logowanie.
 
-    Domyślna wartość to 90.
+    Domyślna wartość to 120.
     
     Obecne akcje użytkownika:
     - logowanie do banku,
