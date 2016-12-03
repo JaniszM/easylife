@@ -33,12 +33,14 @@ def _store_config(data):
 def load_config():
     if not os.path.isfile(CONFIG_FILE):
         # first run
-        _store_config({
+        cfg = {
             "user_timeout": USER_ACTION_TIMEOUT,
             "web_timeout": WEB_TIMEOUT,
             "browser": BROWSER,
             "user_data_filename": DEFAULT_USER_FILENAME
-        })
+        }
+        _store_config(cfg)
+        return cfg
 
     with open(CONFIG_FILE) as data_file:
         cfg = json.load(data_file, encoding="utf-8")
@@ -47,6 +49,7 @@ def load_config():
         month = cfg['month']
         if month != MONTH:
             # new month, reset payments
+            cfg['month'] = MONTH
             for i in cfg['payments']:
                 cfg['payments'][i] = False
             with open(CONFIG_FILE, 'w') as outfile:
@@ -63,19 +66,19 @@ config = load_config()
 try:
     USER_ACTION_TIMEOUT = config['user_timeout']
 except KeyError:
-    USER_ACTION_TIMEOUT = 90
+    pass
 
 # time before the most heave page should be loaded
 try:
     WEB_TIMEOUT = config['web_timeout']
 except KeyError:
-    WEB_TIMEOUT = 10
+    pass
 
 # user browser
 try:
     BROWSER = config['browser']
 except KeyError:
-    BROWSER = "firefox"
+    pass
 
 # user data file
 try:
@@ -95,13 +98,12 @@ def load_user_transfers_data():
 
 
 def write_to_config(transfer_name, status):
+    LOG.debug("Zapisywanie configu.")
     try:
         config['payments'][transfer_name] = status
     except KeyError:
         config['payments'] = {transfer_name: status}
 
-    if config.get('month') != MONTH:
-        config['month'] = MONTH
     _store_config(config)
 
 

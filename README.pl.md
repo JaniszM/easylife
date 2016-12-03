@@ -11,6 +11,7 @@ Wspierane systemy operacyjne:
 
 TOC:
 
+- [Dlaczego powinieneś używać tego narzędzia?](#dlaczego-powinieneś-używać-tego-narzędzia)
 - [Wymagania](#wymagania)
 - [Instalacja](#instalacja)
 - [Konfiguracja](#konfiguracja)
@@ -24,6 +25,14 @@ TOC:
         - [Wsparcie dla użytkownika](#wsparcie-dla-użytkownika)
 - [Pomoc i Ulepszenia](#pomoc-i-ulepszenia)
     
+# Dlaczego powinieneś używać tego narzędzia?
+
+Każdy wykonuje pewne czynności jak płacenie rachunków, segregowanie zdjęć zrobionych smartfonem, sprawdzanie kursów walut czy przeglądanie pewnych zbiorów danych w poszukiwaniu zmian. Przykładów może być nieskończenie wiele. Każda z nich zabiera Ci czas. Gdy czynność jest powtarzalna np. co tydzień a czas potrzebny do jej wykonania przekracza powiedzmy minutę to zautomatyzowanie takiej czynności zaczyna mieć sens. Easylife zamierza być właśnie zbiorem różnych takich zautomatyzowanych czynności.
+
+Zadaniem easylife jest więc przede wszystkim **oszczędzać twój czas** oraz uwolnić Cię nie rzadko od nudnych zadań.
+
+*Jeżeli masz pomysł na zautomatyzowanie jakieś czynności, która może przydać się również innym to napisz do mnie: janiszewski.m.a@gmail.com*.
+
 # Wymagania
 
 - Python 2.7
@@ -78,6 +87,8 @@ Obecnie dostępne:
 - przelewy
 
 ## Przelewy
+
+*Cel narzędzia: zapłacić szereg różnych rachunków poprzez elektroniczne przelewy.*
 
 Bazuje na API **[selenium](http://docs.seleniumhq.org/)**. Oznacza to, że wykorzystuje strukturę strony HTTP hostowaną przez bank. W przypadku zmiany tej struktury przez bank *przelewy* mogą przestać odnajdywać właściwe elementy. **Jeżeli spotkasz się z tym problemem to załóż nowy 'issue'**.
 Zmiana będzie wprowadzona tak szybko jak to tylko możliwe.
