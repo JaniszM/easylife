@@ -127,14 +127,8 @@ class Transfer(object):
     def __init__(self):
         self.driver = webdriver.Firefox()
 
-    def _dump_exception(self, error):
-        LOG.error(error)
-        self.driver.save_screenshot(FAIL_SHOT)
-
     def wait_for_element_and_get_it(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
-        return WebDriverWait(self.driver, timeout).until(
-            ec.presence_of_element_located((locator_type, locator)) and
-            ec.visibility_of_element_located((locator_type, locator)))
+        return WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
 
     def check_transfer_confirmation(self, amount_of_transfer, is_sms_confirmation=True):
         """
@@ -159,7 +153,7 @@ class Transfer(object):
             if status != u"Przelew został zrealizowany":
                 raise Exception(u"Błędny status przelewu: " + status)
 
-            status = convert_to_utf8(self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_STATUS_AMOUNT).text).\
+            status = convert_to_utf8(self.driver.find_element_by_xpath(self.LOCATOR_TRANSFER_STATUS_AMOUNT).text). \
                 replace(u",", u".").replace(u" ", u"")
             if amount_of_transfer != float(status):
                 raise Exception(u"Błędna kwota potwierdzenia przelewu: " + status)
@@ -168,12 +162,11 @@ class Transfer(object):
             if u"PLN" != status:
                 raise Exception(u"Błędna waluta przelewu: " + status)
 
-        except TimeoutException as err:
-            self._dump_exception(
+        except TimeoutException:
+            LOG.error(
                 u"Upłynął czas oczekiwania: sprawdź dokładnie logi czy rzeczywiście przelew nie został "
                 u"wysłany poprawnie czy może mbnak zmienił frontend i nie znaleziono elementów.")
-            LOG.error(err)
-            raise err
+            raise
 
         LOG.info(u"Potwierdzono.")
 
@@ -183,19 +176,16 @@ class Transfer(object):
         if self.driver is None:
             self.__init__()
 
-        self.driver.get("http://mbank.pl")
-        self.driver.find_element_by_xpath(self.LOCATOR_LOGIN).click()
-
-        # wait here until user gives credentials
         try:
+            self.driver.get("http://mbank.pl")
+            self.driver.find_element_by_xpath(self.LOCATOR_LOGIN).click()
+
+            # wait here until user give credentials
             self.wait_for_element_and_get_it(self.LOCATOR_ADD_BOOK, timeout=USER_ACTION_TIMEOUT)
             LOG.info(u"... zalogowano.")
-        except TimeoutException as err:
-            self._dump_exception(u"Nie znaleziono elementów obecnych po zalogowaniu do mbanku."
-                                 u" Upewnij się, że nastąpiło poprawne logowanie.")
-            self.driver.quit()
-            self.driver = None
-            raise err
+        except TimeoutException:
+            LOG.error(u"Błąd logowania: upewnij się, że nastąpiło poprawne zalogowanie do mbanku.")
+            raise
 
     def mbank_logout(self):
         LOG.info(u"Wylogowywanie z mbanku, sprawdź logi ;)")
@@ -223,7 +213,7 @@ class Transfer(object):
             for record in records:
                 if unicode(record.text) == name:
                     LOG.info(u"Odnaleziono odbiorcę '{0}' w książce adresowej.".format(name))
-                    # load bookmark record
+                    self.driver.execute_script("arguments[0].scrollIntoView(true);", record)
                     record.click()
 
                     # load transfer form
@@ -256,9 +246,8 @@ class Transfer(object):
                     return True
             LOG.error(u"Nie odnaleziono rachunku '{0}' w książce adresowej.".format(name))
         except TimeoutException:
-            self._dump_exception(u"Upłynął czas oczekiwania: nie odnaleziono jakiegoś elementu na stronie mbank :/")
-            # LOG.error(err)
-            # self.mbank_logout()
+            LOG.error(u"Upłynął czas oczekiwania: nie odnaleziono jakiegoś elementu na stronie mbank :/")
+            raise
 
         return ok
 
@@ -284,16 +273,23 @@ class Transfer(object):
                     else:
                         LOG.info(u"Wykonano poprawnie przelew za '{0}'.".format(val['odbiorca']))
                     write_to_config(key, status)
-                except Exception as err:
+                finally:
                     write_to_config(key, False)
-                    raise err
         except Exception as err:
             # log all not caught exceptions
-            self._dump_exception(err)
-            raise err
+            try:
+                # this may fail also
+                self.driver.save_screenshot(FAIL_SHOT)
+            except Exception as ex:
+                LOG.exception(ex)
+            LOG.exception(err)
         finally:
-            self.mbank_logout()
-            self.driver.quit()
+            try:
+                # this may fail also
+                self.mbank_logout()
+                self.driver.quit()
+            except Exception as ex:
+                LOG.exception(ex)
             self.driver = None
 
 
@@ -400,44 +396,40 @@ class ShowStuff(Frame):
         month_now = MONTHS_TO_PL[date_now.strftime("%B")]
         month_previous = MONTHS_TO_PL[(date_now.replace(day=1) - datetime.timedelta(days=1)).strftime("%B")]
         transfers = dict()
-        try:
-            # check all user transfers to process
-            for transfer in self.user_data['przelewy']:
-                # skip transfer if is disabled
-                try:
-                    if transfer['aktywny'] is False:
-                        continue
-                except KeyError:
-                    pass
-                # get name of transfer
-                name = transfer['nazwa']
-                try:
-                    # get cost of transfer from GUI widget, if not exist them must be inactive
-                    amount = self.widgets[name]['entry'].get()
-                    if amount:
-                        amount = float(amount.replace(",", "."))
-                    else:
-                        amount = 0
-                except KeyError:
+
+        # check all user transfers to process
+        for transfer in self.user_data['przelewy']:
+            # skip transfer if is disabled
+            try:
+                if transfer['aktywny'] is False:
                     continue
-                # get info about payment did for current transfer
-                try:
-                    is_payed = config['payments'][name]
-                except KeyError:
-                    is_payed = False
+            except KeyError:
+                pass
+            # get name of transfer
+            name = transfer['nazwa']
+            try:
+                # get cost of transfer from GUI widget, if not exist them must be inactive
+                amount = self.widgets[name]['entry'].get()
+                if amount:
+                    amount = float(amount.replace(",", "."))
+                else:
+                    amount = 0
+            except KeyError:
+                continue
+            # get info about payment did for current transfer
+            try:
+                is_payed = config['payments'][name]
+            except KeyError:
+                is_payed = False
 
-                # if there is something to transfer and it wasn't transfered yet, do it
-                if amount > 0 and is_payed is not True:
-                    # copy user transfer data and extend it by GUI set up
-                    transfers[name] = deepcopy(transfer)
-                    transfers[name]['kwota'] = amount
-                    # replace placeholders
-                    transfers[name][u'tytuł'] = transfers[name][u'tytuł'] \
-                        .replace(PLACEHOLDER_MONTH_PREV, month_previous).replace(PLACEHOLDER_MONTH_NOW, month_now)
-
-        except ValueError as err:
-            LOG.error(err)
-            raise err
+            # if there is something to transfer and it wasn't transfered yet, do it
+            if amount > 0 and is_payed is not True:
+                # copy user transfer data and extend it by GUI set up
+                transfers[name] = deepcopy(transfer)
+                transfers[name]['kwota'] = amount
+                # replace placeholders
+                transfers[name][u'tytuł'] = transfers[name][u'tytuł'] \
+                    .replace(PLACEHOLDER_MONTH_PREV, month_previous).replace(PLACEHOLDER_MONTH_NOW, month_now)
 
         if len(transfers) > 0:
             # create new window with summary and confirmation for operations
@@ -474,5 +466,4 @@ def main():
         root.mainloop()
     except Exception as err:
         # log all not caught exceptions
-        LOG.error(err)
-        raise err
+        LOG.exception(err)
