@@ -273,8 +273,9 @@ class Transfer(object):
                     else:
                         LOG.info(u"Wykonano poprawnie przelew za '{0}'.".format(val['odbiorca']))
                     write_to_config(key, status)
-                finally:
+                except Exception:
                     write_to_config(key, False)
+                    raise
         except Exception as err:
             # log all not caught exceptions
             try:
