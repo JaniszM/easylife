@@ -69,7 +69,11 @@ def main():
             'template': sys.argv[4]
         }
         try:
-            params['remove_org'] = sys.argv[5]
+            params['remove-source'] = sys.argv[5]
+        except IndexError:
+            pass
+        try:
+            params['override-existing'] = sys.argv[6]
         except IndexError:
             pass
         organize_photos(**params)
@@ -82,7 +86,7 @@ def main():
               "Dostępne narzędzia:"
               "\n\tprzelewy - uruchamia narzędzie 'przelewy'.\n"
               "\n\tphoto - organizer zdjęć:"
-              "\t\tsyntax: photo [source_dir][destination][template].\n")
+              "\t\tsyntax: photo [source_dir][destination][template]([remove-source][override-existing]).\n")
     elif tool == "version":
         print("\neasylife v{0}\nCopyright 2016 by Marcin Janiszewski, janiszewski.m.a@gmail.com\n".format(VERSION))
     elif tool == "get-geckodriver":

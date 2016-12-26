@@ -67,7 +67,7 @@ def build_new_destination(template, src, destination):
     return template_to_path(template, destination, os.path.basename(src), exif_info)
 
 
-def organize_photos(source_dir, destination, template, remove_org=False):
+def organize_photos(source_dir, destination, template, override_existing=False, remove_org=False):
     """
     Organises target directory by searching all image files and coping them into destination directory
     according to given template and read image EXIF data.
@@ -80,6 +80,8 @@ def organize_photos(source_dir, destination, template, remove_org=False):
     :type destination: str
     :param remove_org: (Optional) If set to True will remove source directory.
     :type remove_org: bool
+    :param override_existing: (Optional) If set to True will will overwrite existing file in destination directory.
+    :type override_existing: bool
     """
 
     if not os.path.exists(source_dir):
@@ -100,12 +102,15 @@ def organize_photos(source_dir, destination, template, remove_org=False):
                     file_src = os.path.join(dirname, filename)
                     file_dest = build_new_destination(template, file_src, destination)
 
-                    # make all required subdirs to target dir
+                    # create all required subdirs to target dir
                     if not os.path.exists(os.path.dirname(file_dest)):
                         os.makedirs(os.path.dirname(file_dest))
 
-                    LOG.info("Coping %s to %s.", file_src, file_dest)
-                    copyfile(file_src, file_dest)
+                    if override_existing is True or (override_existing is False and os.path.isfile(file_dest) is False):
+                        LOG.info("Coping %s to %s.", file_src, file_dest)
+                        copyfile(file_src, file_dest)
+                    else:
+                        LOG.info("File exists, skipping %s.", file_dest)
 
             except ValueError:
                 LOG.debug("File %s has no extension, skipping.", filename)
