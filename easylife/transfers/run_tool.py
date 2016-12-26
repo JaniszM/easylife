@@ -244,6 +244,7 @@ class Transfer(object):
 
                     # validate confirmation
                     self.check_transfer_confirmation(data[u'kwota'], sms)
+                    LOG.debug(u"Wykonywanie zrzutu ekranu poprawnie wykonanego przelewu.")
                     self.driver.save_screenshot(OK_SHOT)
                     return True
             LOG.error(u"Nie odnaleziono rachunku '{0}' w książce adresowej.".format(name))
@@ -282,6 +283,7 @@ class Transfer(object):
             # log all not caught exceptions
             try:
                 # this may fail also
+                LOG.debug(u"Wykonywanie zrzutu ekranu z niepowodzenia wykonania przelewu.ś")
                 self.driver.save_screenshot(FAIL_SHOT)
             except Exception as ex:
                 LOG.exception(ex)

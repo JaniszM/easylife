@@ -7,6 +7,7 @@ import tarfile
 
 from easylife import VERSION
 from easylife.transfers.run_tool import main as transfers_main
+from easylife.photo_organizer.run_photo_organizer import organize_photos
 
 GECKO_VER = "0.11.1"
 GECKO_URL = "https://github.com/mozilla/geckodriver/releases/download/v{0}".format(GECKO_VER)
@@ -58,6 +59,20 @@ def main():
 
     if tool in ["przelewy", "transfers"]:
         transfers_main()
+    elif tool in ["photo", "zdjecia"]:
+        if len(sys.argv) < 5:
+            print("\nZa mało argumentów. Sprawdź 'easylife help'.\n")
+            exit(1)
+        params = {
+            'source_dir': sys.argv[2],
+            'destination': sys.argv[3],
+            'template': sys.argv[4]
+        }
+        try:
+            params['remove_org'] = sys.argv[5]
+        except IndexError:
+            pass
+        organize_photos(**params)
     elif tool == "help":
         print("\neasylife [opcja]|[narzędzie]:"
               "\nDostępne opcje:"
@@ -65,7 +80,9 @@ def main():
               "\n\tversion - wyświetla wersję programu."
               "\n\tget-geckodriver - pobiera i przygotowuje geckodriver do użycia.\n\n"
               "Dostępne narzędzia:"
-              "\n\tprzelewy - uruchamia narzędzie 'przelewy'.\n")
+              "\n\tprzelewy - uruchamia narzędzie 'przelewy'.\n"
+              "\n\tphoto - organizer zdjęć:"
+              "\t\tsyntax: photo [source_dir][destination][template].\n")
     elif tool == "version":
         print("\neasylife v{0}\nCopyright 2016 by Marcin Janiszewski, janiszewski.m.a@gmail.com\n".format(VERSION))
     elif tool == "get-geckodriver":

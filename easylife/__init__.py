@@ -1,7 +1,7 @@
 import os
 import logging
 
-VERSION = "0.1.7"
+VERSION = "0.2.0"
 
 WORKING_DIR = ""
 LOG_DIR = os.path.join(WORKING_DIR, "logs")
