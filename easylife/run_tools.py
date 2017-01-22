@@ -69,11 +69,11 @@ def main():
             'template': sys.argv[4]
         }
         try:
-            params['remove-source'] = sys.argv[5]
+            params['remove_source'] = bool(sys.argv[5])
         except IndexError:
             pass
         try:
-            params['override-existing'] = sys.argv[6]
+            params['override_existing'] = bool(sys.argv[6])
         except IndexError:
             pass
         organize_photos(**params)

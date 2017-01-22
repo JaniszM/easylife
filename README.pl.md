@@ -232,6 +232,7 @@ Planowane ulepszenia i poprawki:
     - konfiguracja ścieżki i nazwy pliku logów oraz zrzutów ekranu,
     - testy dla pythona 3.0.
     - unittesty i testy integracyjne.
+    - narzedzie help
 
 2. Narzędzie *Przelewy*:
 
