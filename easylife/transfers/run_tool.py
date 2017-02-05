@@ -42,8 +42,14 @@ def load_config():
         _store_config(cfg)
         return cfg
 
-    with open(CONFIG_FILE) as data_file:
-        cfg = json.load(data_file, encoding="utf-8")
+    try:
+        with open(CONFIG_FILE) as data_file:
+            cfg = json.load(data_file, encoding="utf-8")
+    except ValueError as err:
+        if err.message == "No JSON object could be decoded":
+            cfg = {}
+        else:
+            raise err
 
     try:
         month = cfg['month']

@@ -1,3 +1,4 @@
 selenium==3.0.1
 jsonschema==2.5.1
 requests==2.12.3
+exifread==2.1.2

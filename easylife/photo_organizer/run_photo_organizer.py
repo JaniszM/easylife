@@ -46,7 +46,7 @@ def template_to_path(template, destination, filename, date):
         return date
     else:
         return os.path.join(destination,
-                            template.replace("RRRR", str(date.year)).replace("MONTH", str(date.strftime("%B"))).
+                            template.replace("YYYY", str(date.year)).replace("MONTH", str(date.strftime("%B"))).
                             replace("MM", str(date.month)).replace("DD", str(date.day)).replace("NAME", filename))
 
 
@@ -69,10 +69,13 @@ def build_new_photo_destination(template, src, destination):
     f.close()
 
     # get proper field and convert to datetime
-    exif_info = str(exif_info['EXIF DateTimeOriginal'])
-    exif_info = datetime.strptime(exif_info, FILE_DATE_FORMAT)
-
-    return template_to_path(template, destination, os.path.basename(src), exif_info)
+    try:
+        exif_info = str(exif_info['EXIF DateTimeOriginal'])
+        exif_info = datetime.strptime(exif_info, FILE_DATE_FORMAT)
+        return template_to_path(template, destination, os.path.basename(src), exif_info)
+    except KeyError:
+        LOG.info('Missing exif DateTimeOriginal tag for %s. Reading date from system file property...', src)
+        return build_new_file_destination(template, src, destination)
 
 
 def build_new_file_destination(template, src, destination):
@@ -94,13 +97,13 @@ def build_new_file_destination(template, src, destination):
     else:
         stat = os.stat(src)
         try:
-            date = stat.st_birthtime
+            date = stat.st_ctime
         except AttributeError:
             # We're probably on Linux. No easy way to get creation dates here,
             # so we'll settle for when its content was last modified.
             date = stat.st_mtime
 
-        date = datetime.fromtimestamp(int(date))
+    date = datetime.fromtimestamp(int(date))
 
     return template_to_path(template, destination, os.path.basename(src), date)
 
@@ -163,6 +166,8 @@ def organize_photos(source_dir, destination, template, override_existing=False, 
 
             except ValueError:
                 LOG.debug("File %s has no extension, skipping.", filename)
+            except Exception as err:
+                LOG.exception(err)
 
     LOG.info("%d files copied.", copied_count)
 

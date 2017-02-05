@@ -11,3 +11,4 @@ geckodriver*
 transfers_config
 my_transfers.json
 .pypirc
+venv
