@@ -5,28 +5,33 @@ import os
 import requests
 import tarfile
 
-from easylife import VERSION
+from easylife import VERSION, GECKO_DIR
 from easylife.transfers.run_tool import main as transfers_main
 from easylife.photo_organizer.run_photo_organizer import organize_photos
 
-GECKO_VER = "0.11.1"
-GECKO_URL = "https://github.com/mozilla/geckodriver/releases/download/v{0}".format(GECKO_VER)
+GECKO_URL = "https://github.com/mozilla/geckodriver/releases/download/{0}"
+
+
+def get_newest_gecko_version():
+    return requests.get("https://github.com/mozilla/geckodriver/releases/latest").url.rsplit('/', 1)[-1]
 
 
 def _get_geckodriver():
+    gecko_v = get_newest_gecko_version()
+    gecko_url = GECKO_URL.format(gecko_v)
     if os.name in ["posix"]:
         # OSX
-        gecko_path = "/usr/bin"
-        url = os.path.join(GECKO_URL, "geckodriver-v{0}-macos.tar.gz".format(GECKO_VER))
+        gecko_path = GECKO_DIR
+        url = os.path.join(gecko_url, "geckodriver-{0}-macos.tar.gz".format(gecko_v))
         # elif os.name in ['nt']:
         # windows
     else:
         print("Nie rozpoznano systemu, zainstaluj geckodriver manualnie.")
         return
 
-    gecko_filepath = os.path.join(gecko_path, "geckodriver-v{0}-macos.tar.gz".format(GECKO_VER))
+    gecko_filepath = os.path.join(gecko_path, "geckodriver-{0}-macos.tar.gz".format(gecko_v))
 
-    print("Pobieranie geckodriver z {0}...".format(url))
+    print("Pobieranie geckodriver z {0} do {1}".format(url, gecko_path))
     with open(gecko_filepath, 'wb') as handle:
         response = requests.get(url, stream=True)
 
@@ -45,7 +50,7 @@ def _get_geckodriver():
 
     print("Rozpakowano.\nPorządkowanie plików.")
     os.remove(gecko_filepath)
-    os.rename(os.path.join(gecko_path, "geckodriver"), "/usr/bin/geckodriver")
+    # os.rename(os.path.join(gecko_path, "geckodriver"), "/usr/bin/geckodriver")
 
     print("Geckodriver gotowy do użycia.")
 

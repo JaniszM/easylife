@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from jsonschema import validate
 
-from easylife import get_logger, WORKING_DIR
+from easylife import get_logger, WORKING_DIR, GECKO_DIR
 from easylife.utils import convert_to_utf8
 from easylife.transfers import MONTHS_TO_PL, MONTH, get_schema, PLACEHOLDER_MONTH_NOW, \
     PLACEHOLDER_MONTH_PREV, REPORT_DIR, USER_ACTION_TIMEOUT, WEB_TIMEOUT, BROWSER, DEFAULT_USER_FILENAME
@@ -117,7 +117,7 @@ class Transfer(object):
     # mbank locators
     LOCATOR_LOGIN = "//a[contains(@class, 'button ind')]"
     LOCATOR_LOGOUT = "//i[@class='icon-white-logout']"
-    LOCATOR_ADD_BOOK = "//li[@data-id='AddressBook']/a[@href='#/AddressBook']"
+    LOCATOR_BOOKMARKS = "//li[@data-id='AddressBook']/a[@href='#/AddressBook']"
     LOCATOR_RECORDS_LIST = "//ul[@id='records']"
     LOCATOR_RECORDS = LOCATOR_RECORDS_LIST + "/li[@id]/h3/strong[@class='name']"
 
@@ -133,10 +133,12 @@ class Transfer(object):
     LOCATOR_TRANSFER_STATUS_CURR = LOCATOR_TRANSFER_STATUS + "/ul/li/span[@class='currency']"
 
     def __init__(self):
-        self.driver = webdriver.Firefox()
+        self.driver = webdriver.Firefox(executable_path=os.path.join(GECKO_DIR, "geckodriver"),
+                                        log_path=os.path.join(GECKO_DIR, "geckodriver.log"))
 
     def wait_for_element_and_get_it(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
-        return WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
+        WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
+        return WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable((locator_type, locator)))
 
     def check_transfer_confirmation(self, amount_of_transfer, is_sms_confirmation=True):
         """
@@ -189,7 +191,7 @@ class Transfer(object):
             self.driver.find_element_by_xpath(self.LOCATOR_LOGIN).click()
 
             # wait here until user give credentials
-            self.wait_for_element_and_get_it(self.LOCATOR_ADD_BOOK, timeout=USER_ACTION_TIMEOUT)
+            self.wait_for_element_and_get_it(self.LOCATOR_BOOKMARKS, timeout=USER_ACTION_TIMEOUT)
             LOG.info(u"... zalogowano.")
         except TimeoutException:
             LOG.error(u"Błąd logowania: upewnij się, że nastąpiło poprawne zalogowanie do mbanku.")
@@ -214,7 +216,7 @@ class Transfer(object):
 
         try:
             # open address book
-            self.wait_for_element_and_get_it(self.LOCATOR_ADD_BOOK).click()
+            self.wait_for_element_and_get_it(self.LOCATOR_BOOKMARKS).click()
             # find correct record
             self.wait_for_element_and_get_it(self.LOCATOR_RECORDS_LIST)
             records = self.driver.find_elements(By.XPATH, self.LOCATOR_RECORDS)

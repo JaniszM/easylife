@@ -27,7 +27,7 @@ setup(
     license='MIT',
     url='https://github.com/JaniszM/easylife',
     download_url='https://github.com/JaniszM/easylife/tarball/{0}'.format(VERSION),
-    install_requires=["selenium==3.0.1",
+    install_requires=["selenium==3.4.3",
                       "jsonschema==2.5.1",
                       "requests==2.12.3"],
     keywords=['easy', 'life', 'shorthand', 'quick', 'script', 'tool', 'useful',
