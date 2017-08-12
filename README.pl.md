@@ -23,6 +23,8 @@ TOC:
         - [Uruchomienie](#uruchomienie)
         - [Użycie](#użycie)
         - [Wsparcie dla użytkownika](#wsparcie-dla-użytkownika)
+    - [Organizer zdjęć i filmów](#organizer-zdjęć-i-filmów)
+        - [Uruchomienie i uźycie](#uruchomienie-i-użycie)
 - [Pomoc i Ulepszenia](#pomoc-i-ulepszenia)
     
 # Dlaczego powinieneś używać tego narzędzia?
@@ -70,13 +72,18 @@ Stwórz sobie jakiś katalog dla danych i odpalaj zawsze tam narzędzie.
 
 Poniżej przedstawiony jest sposób uruchomiania każdego z narzędzi/skryptów wbudowanych w **easylife**.
 
-Po zainstalowaniu paczki zostanie dodany alias ```easylife``` do katalogu ```bin``` twojego interpretera Python. Alias powinien być dostępny z poziomu powłoki systemu. Jeżeli z jakiegoś powodu nie jest, upewnij się, że katalog ```bin``` twojego Pythona jest dodany to zmiennej systemowej ```PATH```.
+Po zainstalowaniu paczki zostanie dodany alias ```easylife``` do katalogu ```bin``` interpretera Python. Alias powinien być dostępny z poziomu powłoki systemu. Jeżeli z jakiegoś powodu nie jest, upewnij się, że katalog ```bin``` twojego Pythona jest dodany to zmiennej systemowej ```PATH```.
 Jeżeli ```PATH``` jest poprawnie skonfigurowany wywołaj:
 ```
 easylife <narzędzie>
 
 np.:
 easylife przelewy
+```
+
+Pomoc:
+```
+easylife help
 ```
 
 # Narzędzia i Skrypty
@@ -116,11 +123,11 @@ Obecnie wspierane interfejsy banków:
     Przetestowane przeglądarki:
     - Firefox
 
-2. Na stronie banku w książce adresowej muszą być zdefiniowani odbiorcy, do których chcesz rozesłać przelewy. Nazwa w książce musi się zgadzać z nazwami przelewów z pól "odbiorca" w pliku danych. Oczywiście w książce musi być zdefiniowany poprawny numer konta bankowego odbiorcy.
+2. Na stronie banku w książce adresowej muszą być zdefiniowani odbiorcy, do których zostaną rozesłane przelewy. Nazwa w książce musi się zgadzać z nazwami przelewów z pól "odbiorca" w pliku danych. Oczywiście w książce musi być zdefiniowany poprawny numer konta bankowego odbiorcy.
 
 ### Konfiguracja
 
-Plik konfiguracji ```transfers_config```. W przypadku braku pliku zostanie utworzony nowy z domyślnymi wartościami.
+Plik konfiguracji ```transfers_config```. W przypadku braku pliku zostanie utworzony nowy z domyślnymi wartościami. Pliki konfiguracyjne są tworzone w katalogu, z którego narzędzie zostało włączone.
 
 Opcje:
 
@@ -191,6 +198,7 @@ W polu *"tytuł"* istnieje możliwość użycia tak zwanych placeholderów. Obec
 
 ```
 easylife przelewy
+easylife transfers
 ```
 
 ### Użycie
@@ -210,13 +218,54 @@ Po uruchomieniu i poprawnym skonfigurowaniu pojawi się ekran przelewów.
 
 Narzędzie wykonuje szczegółowe logi oraz zrzuty ekranów. Wszystko po to by mieć pewność, że przelew został wykonany jak trzeba.
 
-Logi zapisywane są w pliku ```logs/easylife.log```.
-
-Zrzuty ekranów w plikach ```reports/transfer_error_{datetime}``` oraz ```reports/transfer_success_{datetime}```.
+Logi zapisywane są w katalogu domowym użytkownika w ```easylife/logs/easylife.log``` a zrzuty ekranów w ```easylife/reports/transfer_error_{datetime}``` oraz ```easylife/reports/transfer_success_{datetime}```.
 
 W przypadku powodzenia zapisywany jest zrzut z ekranu potwierdzenia, w przypadku jakiegoś problemu zrzut ekranu z momentu, w którym problem wystąpił.
 
-Obecnie katalogiem logów i raportów jest katalog, w którym skrypt został wywołany, jak w przypadku konfiguracji.
+Pliki konfiguracyjne programu przechowywane są w katalogu, z którego skrypt został wywołany.
+
+## Organizer zdjęć i filmów
+
+*Cel narzędzia: uporządkować zasoby zdjęć i wideo, lub zarchivizować je.*
+
+Narzędzie przeszukuje rekursywnie podaną ścieżkę dla plików graficznych i video a następnie przenosi je do wskazanego katalogu według zadanej struktury i nazewnictwa.
+Wykorzystuje EXIF do ustalenia daty zdjęcia. Jeżeli brak EXIF próbuje odczytać date systemową utworzenia pliku.
+
+Template według, którego znalezione pliki są rozrzycane po katalogu:
+- YYYY: pozycja roku, zostanie zamienione na rok założenia pliku,
+- MONTH lub MM: pozycja miesiąca,
+- DD: pozycja dni,
+- NAME: pozycja nazwy pliku przenoszonego,
+- rozdzielacze, '-' i '/'.
+
+Przetwarzane są jedynie pliki o znanych rozszerzeniach. Listę rozszerzeń można znaleźć w `easylife/photo_organizer/__init__.py`. 
+
+Sprawdzono dla:
+- OSX Yosemite,
+- Windows 7.
+
+### Uruchomienie i użycie
+
+```
+easylife zdjecia [params]
+easylife photo [params]
+```
+
+Parametry:
+- source_dir: katalog, w którym znajdują się pliki do przetworzenia,
+- destination: katalog gdzie zostaną umieszczone pliki przetworzone,
+- template: template według, którego segregować pliki,
+- (OPCJONALNE) remove-source: jeżeli się pojawi to katalog źródłowy (source_dir) zostanie usunięty,
+- (OPCJONALNE) overwrite-existing: jeżeli się pojawi to w przypadku kolizji plików te w *destination* zostaną zastąpione tymi z *source_dir*. 
+
+**PRZYKŁADY**
+```
+# Backup zdjęć z karty telefonu do katalogów typu ./my_backup/photo/2017/05-21-DCIM0000001.jpg. Duplikaty w ./my_backup/photo nadpisane będą.
+easylife zdjecia /my_phone_card/photo ./my_backup/photo /YYYY/MM-DD-NAME overwrite-existing
+
+# Backup filmów z karty telefonu do katalogów typu ./my_backup/video/2017-03/funny1234.avi. Katalog końcowy /my_phone_card/video zostanie usunięty.
+easylife zdjecia /my_phone_card/video ./my_backup/video /YYYY-MM/NAME remove source
+```
 
 # Pomoc i Ulepszenia
 

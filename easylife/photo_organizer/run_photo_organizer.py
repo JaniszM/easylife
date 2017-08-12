@@ -108,7 +108,7 @@ def build_new_file_destination(template, src, destination):
     return template_to_path(template, destination, os.path.basename(src), date)
 
 
-def organize_photos(source_dir, destination, template, override_existing=False, remove_source=False):
+def organize_photos(source_dir, destination, template, overwrite_existing=False, remove_source=False):
     """
     Organises target directory by searching all image files and coping them into destination directory
     according to given template and read image EXIF data.
@@ -121,8 +121,8 @@ def organize_photos(source_dir, destination, template, override_existing=False, 
     :type destination: str
     :param remove_source: (Optional) If set to True will remove source directory.
     :type remove_source: bool
-    :param override_existing: (Optional) If set to True will will overwrite existing file in destination directory.
-    :type override_existing: bool
+    :param overwrite_existing: (Optional) If set to True will will overwrite existing file in destination directory.
+    :type overwrite_existing: bool
     """
 
     if not os.path.exists(source_dir):
@@ -157,7 +157,7 @@ def organize_photos(source_dir, destination, template, override_existing=False, 
                     if not os.path.exists(os.path.dirname(file_dest)):
                         os.makedirs(os.path.dirname(file_dest))
 
-                    if override_existing is True or (override_existing is False and os.path.isfile(file_dest) is False):
+                    if overwrite_existing is True or (overwrite_existing is False and os.path.isfile(file_dest) is False):
                         LOG.info("Coping %s to %s.", file_src, file_dest)
                         copy2(file_src, file_dest)
                         copied_count += 1

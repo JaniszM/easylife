@@ -4,9 +4,10 @@ import os
 import datetime
 import json
 
-from easylife import WORKING_DIR
+from easylife import TOOL_DIR
 
-REPORT_DIR = os.path.join(WORKING_DIR, "report")
+VERSION = '0.1.7'
+REPORT_DIR = os.path.join(TOOL_DIR, "report")
 
 SCHEMA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "user_data_schema.json")
 DEFAULT_USER_FILENAME = "my_transfers.json"

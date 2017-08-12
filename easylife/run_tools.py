@@ -5,8 +5,10 @@ import os
 import requests
 import tarfile
 
-from easylife import VERSION, GECKO_DIR
+from easylife import VERSION, TOOL_DIR
+from easylife.transfers import VERSION as VERSION_TRASFER
 from easylife.transfers.run_tool import main as transfers_main
+from easylife.photo_organizer import VERSION as VERSION_PHOTO
 from easylife.photo_organizer.run_photo_organizer import organize_photos
 
 GECKO_URL = "https://github.com/mozilla/geckodriver/releases/download/{0}"
@@ -21,7 +23,7 @@ def _get_geckodriver():
     gecko_url = GECKO_URL.format(gecko_v)
     if os.name in ["posix"]:
         # OSX
-        gecko_path = GECKO_DIR
+        gecko_path = TOOL_DIR
         url = os.path.join(gecko_url, "geckodriver-{0}-macos.tar.gz".format(gecko_v))
         # elif os.name in ['nt']:
         # windows
@@ -78,7 +80,7 @@ def main():
         except IndexError:
             pass
         try:
-            params['override_existing'] = bool(sys.argv[6])
+            params['overwrite_existing'] = bool(sys.argv[6])
         except IndexError:
             pass
         organize_photos(**params)
@@ -91,9 +93,10 @@ def main():
               "Dostępne narzędzia:"
               "\n\tprzelewy - uruchamia narzędzie 'przelewy'.\n"
               "\n\tphoto - organizer zdjęć:"
-              "\t\tsyntax: photo [source_dir][destination][template]([remove-source][override-existing]).\n")
+              "\t\tsyntax: photo [source_dir][destination][template]([remove-source][overwrite-existing]).\n")
     elif tool == "version":
-        print("\neasylife v{0}\nCopyright 2016 by Marcin Janiszewski, janiszewski.m.a@gmail.com\n".format(VERSION))
+        print("\neasylife v{0}\ntransfers v{1}\nphoto v{2}\nCopyright 2016 by Marcin Janiszewski,"
+              " janiszewski.m.a@gmail.com\n".format(VERSION, VERSION_TRASFER, VERSION_PHOTO))
     elif tool == "get-geckodriver":
         _get_geckodriver()
     else:

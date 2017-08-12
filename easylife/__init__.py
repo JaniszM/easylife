@@ -3,13 +3,12 @@ import logging
 
 VERSION = "0.2.0"
 
-GECKO_DIR = os.path.join(os.getenv("HOME"), "easylife")
+TOOL_DIR = os.path.join(os.getenv("HOME"), "easylife")
 WORKING_DIR = ""
-LOG_DIR = os.path.join(WORKING_DIR, "logs")
-LOG_FILE = os.path.join(LOG_DIR, "easylife.log")
+LOG_FILE = os.path.join(TOOL_DIR, "logs", "easylife.log")
 
-if not os.path.exists(GECKO_DIR):
-    os.makedirs(GECKO_DIR)
+if not os.path.exists(TOOL_DIR):
+    os.makedirs(TOOL_DIR)
 
 
 def get_logger(module_name, log_file=LOG_FILE, log_level=logging.DEBUG):

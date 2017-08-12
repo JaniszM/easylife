@@ -12,7 +12,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from jsonschema import validate
 
-from easylife import get_logger, WORKING_DIR, GECKO_DIR
+from easylife import get_logger, WORKING_DIR, TOOL_DIR
 from easylife.utils import convert_to_utf8
 from easylife.transfers import MONTHS_TO_PL, MONTH, get_schema, PLACEHOLDER_MONTH_NOW, \
     PLACEHOLDER_MONTH_PREV, REPORT_DIR, USER_ACTION_TIMEOUT, WEB_TIMEOUT, BROWSER, DEFAULT_USER_FILENAME
@@ -115,7 +115,8 @@ def write_to_config(transfer_name, status):
 
 class Transfer(object):
     # mbank locators
-    LOCATOR_LOGIN = "//a[contains(@class, 'button ind')]"
+    LOCATOR_MAIN_POPUP = "//a[@class='popup close']"
+    LOCATOR_LOGIN = "//a[contains(text(), 'Zaloguj')]"
     LOCATOR_LOGOUT = "//i[@class='icon-white-logout']"
     LOCATOR_BOOKMARKS = "//li[@data-id='AddressBook']/a[@href='#/AddressBook']"
     LOCATOR_RECORDS_LIST = "//ul[@id='records']"
@@ -133,8 +134,8 @@ class Transfer(object):
     LOCATOR_TRANSFER_STATUS_CURR = LOCATOR_TRANSFER_STATUS + "/ul/li/span[@class='currency']"
 
     def __init__(self):
-        self.driver = webdriver.Firefox(executable_path=os.path.join(GECKO_DIR, "geckodriver"),
-                                        log_path=os.path.join(GECKO_DIR, "geckodriver.log"))
+        self.driver = webdriver.Firefox(executable_path=os.path.join(TOOL_DIR, "geckodriver"),
+                                        log_path=os.path.join(TOOL_DIR, "geckodriver.log"))
 
     def wait_for_element_and_get_it(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
         WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
@@ -188,7 +189,10 @@ class Transfer(object):
 
         try:
             self.driver.get("http://mbank.pl")
-            self.driver.find_element_by_xpath(self.LOCATOR_LOGIN).click()
+            # close popup on main page if visible
+            # self.driver.find_element_by_xpath(self.LOCATOR_MAIN_POPUP).click()
+            # login
+            self.wait_for_element_and_get_it(self.LOCATOR_LOGIN, By.XPATH).click()
 
             # wait here until user give credentials
             self.wait_for_element_and_get_it(self.LOCATOR_BOOKMARKS, timeout=USER_ACTION_TIMEOUT)
