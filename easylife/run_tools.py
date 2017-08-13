@@ -69,22 +69,27 @@ def main():
     if tool in ["przelewy", "transfers"]:
         transfers_main()
     elif tool in ["photo", "zdjecia"]:
+
+        def check_opt(arg):
+            if arg == 'remove-source':
+                params['remove_source'] = True
+            elif arg == 'overwrite-existing':
+                params['overwrite_existing'] = True
+
         if len(sys.argv) < 5:
             print("\nZa mało argumentów. Sprawdź 'easylife help'.\n")
             exit(1)
         params = {
-            'source_dir': sys.argv[2],
-            'destination': sys.argv[3],
+            'source_dir': os.path.expanduser(sys.argv[2]),
+            'destination': os.path.expanduser(sys.argv[3]),
             'template': sys.argv[4]
         }
         try:
-            params['remove_source'] = bool(sys.argv[5])
+            check_opt(sys.argv[5])
+            check_opt(sys.argv[6])
         except IndexError:
             pass
-        try:
-            params['overwrite_existing'] = bool(sys.argv[6])
-        except IndexError:
-            pass
+
         organize_photos(**params)
     elif tool == "help":
         print("\neasylife [opcja]|[narzędzie]:"
