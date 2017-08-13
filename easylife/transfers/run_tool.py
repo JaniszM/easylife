@@ -15,9 +15,9 @@ from jsonschema import validate
 from easylife import get_logger, WORKING_DIR, TOOL_DIR
 from easylife.utils import convert_to_utf8
 from easylife.transfers import MONTHS_TO_PL, MONTH, get_schema, PLACEHOLDER_MONTH_NOW, \
-    PLACEHOLDER_MONTH_PREV, REPORT_DIR, USER_ACTION_TIMEOUT, WEB_TIMEOUT, BROWSER, DEFAULT_USER_FILENAME
+    PLACEHOLDER_MONTH_PREV, REPORT_DIR, USER_ACTION_TIMEOUT, WEB_TIMEOUT, BROWSER, DEFAULT_USER_FILENAME, LOG_FILE
 
-LOG = get_logger(__name__)
+LOG = get_logger(__name__, log_file=LOG_FILE)
 
 USER_DATA_FILE = os.path.join(WORKING_DIR, DEFAULT_USER_FILENAME)
 CONFIG_FILE = os.path.join(WORKING_DIR, "transfers_config")

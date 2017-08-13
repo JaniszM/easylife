@@ -12,6 +12,7 @@ if not os.path.exists(TOOL_DIR):
 
 
 def get_logger(module_name, log_file=LOG_FILE, log_level=logging.DEBUG):
+    log_file = os.path.join(TOOL_DIR, "logs", log_file)
     path = os.path.dirname(log_file)
     if not os.path.isdir(path):
         os.makedirs(path)

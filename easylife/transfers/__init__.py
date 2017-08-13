@@ -8,6 +8,7 @@ from easylife import TOOL_DIR
 
 VERSION = '0.1.7'
 REPORT_DIR = os.path.join(TOOL_DIR, "report")
+LOG_FILE = "easylife-transfers.log"
 
 SCHEMA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "user_data_schema.json")
 DEFAULT_USER_FILENAME = "my_transfers.json"

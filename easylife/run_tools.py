@@ -5,11 +5,13 @@ import os
 import requests
 import tarfile
 
-from easylife import VERSION, TOOL_DIR
+from easylife import VERSION, TOOL_DIR, get_logger
 from easylife.transfers import VERSION as VERSION_TRASFER
 from easylife.transfers.run_tool import main as transfers_main
 from easylife.photo_organizer import VERSION as VERSION_PHOTO
 from easylife.photo_organizer.run_photo_organizer import organize_photos
+
+LOG = get_logger(__name__)
 
 GECKO_URL = "https://github.com/mozilla/geckodriver/releases/download/{0}"
 
@@ -28,33 +30,33 @@ def _get_geckodriver():
         # elif os.name in ['nt']:
         # windows
     else:
-        print("Nie rozpoznano systemu, zainstaluj geckodriver manualnie.")
+        LOG.error("Nie rozpoznano systemu, zainstaluj geckodriver manualnie.")
         return
 
     gecko_filepath = os.path.join(gecko_path, "geckodriver-{0}-macos.tar.gz".format(gecko_v))
 
-    print("Pobieranie geckodriver z {0} do {1}".format(url, gecko_path))
+    LOG.info("Pobieranie geckodriver z {0} do {1}".format(url, gecko_path))
     with open(gecko_filepath, 'wb') as handle:
         response = requests.get(url, stream=True)
 
         if not response.ok:
-            print("Wystąpił problem z pobieraniem pliku: {0}".format(response))
+            LOG.error("Wystąpił problem z pobieraniem pliku: {0}".format(response))
 
         for block in response.iter_content(1024):
             handle.write(block)
 
-    print("Pobrano.\nRozpakowywanie...")
+    LOG.info("Pobrano.\nRozpakowywanie...")
     gecko_file = tarfile.open(gecko_filepath, 'r:gz')
     try:
         gecko_file.extractall(gecko_path)
     finally:
         gecko_file.close()
 
-    print("Rozpakowano.\nPorządkowanie plików.")
+    LOG.info("Rozpakowano.\nPorządkowanie plików.")
     os.remove(gecko_filepath)
     # os.rename(os.path.join(gecko_path, "geckodriver"), "/usr/bin/geckodriver")
 
-    print("Geckodriver gotowy do użycia.")
+    LOG.info("Geckodriver gotowy do użycia.")
 
 
 def main():

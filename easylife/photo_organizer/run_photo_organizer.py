@@ -9,9 +9,9 @@ from shutil import copy2
 
 from easylife import get_logger
 from easylife.photo_organizer import PHOTO_EXTENSIONS, VIDEO_EXTENSIONS, METADATA_EXTENSIONS, PATTERN, \
-    DEFAULT_COPY_DIR, FILE_DATE_FORMAT
+    DEFAULT_COPY_DIR, FILE_DATE_FORMAT, LOG_FILE
 
-LOG = get_logger(__name__, log_level=logging.INFO)
+LOG = get_logger(__name__, log_file=LOG_FILE, log_level=logging.INFO)
 
 
 def validate_template(template):
@@ -157,7 +157,8 @@ def organize_photos(source_dir, destination, template, overwrite_existing=False,
                     if not os.path.exists(os.path.dirname(file_dest)):
                         os.makedirs(os.path.dirname(file_dest))
 
-                    if overwrite_existing is True or (overwrite_existing is False and os.path.isfile(file_dest) is False):
+                    if overwrite_existing is True or (
+                                    overwrite_existing is False and os.path.isfile(file_dest) is False):
                         LOG.info("Coping %s to %s.", file_src, file_dest)
                         copy2(file_src, file_dest)
                         copied_count += 1
