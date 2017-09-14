@@ -35,7 +35,7 @@ Zadaniem easylife jest więc przede wszystkim **oszczędzać twój czas** oraz u
 
 *Jeżeli masz pomysł na zautomatyzowanie jakieś czynności, która może przydać się również innym to napisz do mnie: janiszewski.m.a@gmail.com*.
 
-# Known problems
+# Znane problemy
 
 **Przelewy:** Obecnie niektóre lokatory mbanku są nieaktualne, nowa wersja będzie dostępna wkrótce.
 
