@@ -30,6 +30,10 @@ Purpose of the easylife first of all is to **save Your time** and release you fr
 
 *If you have the idea for automate an activity which can be useful for others please write to me: janiszewski.m.a@gmail.com*.
 
+# Known problems
+
+**Transfers:** Currently some locators for mbank are out of date, new version will be released soon.
+
 # Requirements
 
 - Python 2.7.
