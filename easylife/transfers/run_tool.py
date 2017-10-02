@@ -137,9 +137,15 @@ class Transfer(object):
         self.driver = webdriver.Firefox(executable_path=os.path.join(TOOL_DIR, "geckodriver"),
                                         log_path=os.path.join(TOOL_DIR, "geckodriver.log"))
 
-    def wait_for_element_and_get_it(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
+    def wait_for_clickable_element(self, locator, locator_type=By.XPATH, timeout=WEB_TIMEOUT):
         WebDriverWait(self.driver, timeout).until(ec.presence_of_element_located((locator_type, locator)))
         return WebDriverWait(self.driver, timeout).until(ec.element_to_be_clickable((locator_type, locator)))
+
+    def scroll_to_elem(self, elem):
+        self.driver.execute_script("arguments[0].scrollIntoView();", elem)
+
+    def js_click(self, elem):
+        self.driver.execute_script("arguments[0].click();", elem)
 
     def check_transfer_confirmation(self, amount_of_transfer, is_sms_confirmation=True):
         """
@@ -158,7 +164,7 @@ class Transfer(object):
         LOG.info(u"Oczekiwanie na potwierdzenie przelewu.")
         try:
             status = convert_to_utf8(
-                self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_STATUS_OK, timeout=timeout).text)
+                self.wait_for_clickable_element(self.LOCATOR_TRANSFER_STATUS_OK, timeout=timeout).text)
 
             LOG.info(u"Weryfikacja potwierdzenia...")
             if status != u"Przelew został zrealizowany":
@@ -192,10 +198,10 @@ class Transfer(object):
             # close popup on main page if visible
             # self.driver.find_element_by_xpath(self.LOCATOR_MAIN_POPUP).click()
             # login
-            self.wait_for_element_and_get_it(self.LOCATOR_LOGIN, By.XPATH).click()
+            self.wait_for_clickable_element(self.LOCATOR_LOGIN, By.XPATH).click()
 
             # wait here until user give credentials
-            self.wait_for_element_and_get_it(self.LOCATOR_BOOKMARKS, timeout=USER_ACTION_TIMEOUT)
+            self.wait_for_clickable_element(self.LOCATOR_BOOKMARKS, timeout=USER_ACTION_TIMEOUT)
             LOG.info(u"... zalogowano.")
         except TimeoutException:
             LOG.error(u"Błąd logowania: upewnij się, że nastąpiło poprawne zalogowanie do mbanku.")
@@ -220,9 +226,9 @@ class Transfer(object):
 
         try:
             # open address book
-            self.wait_for_element_and_get_it(self.LOCATOR_BOOKMARKS).click()
+            self.wait_for_clickable_element(self.LOCATOR_BOOKMARKS).click()
             # find correct record
-            self.wait_for_element_and_get_it(self.LOCATOR_RECORDS_LIST)
+            self.wait_for_clickable_element(self.LOCATOR_RECORDS_LIST)
             records = self.driver.find_elements(By.XPATH, self.LOCATOR_RECORDS)
             for record in records:
                 if unicode(record.text) == name:
@@ -232,11 +238,12 @@ class Transfer(object):
 
                     # load transfer form
                     LOG.info(u"Ładowanie formularza.")
-                    self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_DO, By.ID).click()
+                    web_el = self.wait_for_clickable_element(self.LOCATOR_TRANSFER_DO, By.ID)
+                    self.js_click(web_el)
 
                     # enter data
                     LOG.info(u"Wypełnianie danych.")
-                    web_el = self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_AMOUNT, By.ID)
+                    web_el = self.wait_for_clickable_element(self.LOCATOR_TRANSFER_AMOUNT, By.ID)
                     web_el.clear()
                     web_el.send_keys(str(data['kwota']))
                     web_el = self.driver.find_element_by_id(self.LOCATOR_TRANSFER_TITLE)
@@ -250,7 +257,7 @@ class Transfer(object):
                     # if sms confirmation code is disabled then send transfer instead of waiting for user action
                     sms = data.get('sms')
                     if sms is not None and not sms:
-                        self.wait_for_element_and_get_it(self.LOCATOR_TRANSFER_SEND).click()
+                        self.wait_for_clickable_element(self.LOCATOR_TRANSFER_SEND).click()
                     else:
                         sms = True
 
