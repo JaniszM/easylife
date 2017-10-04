@@ -19,8 +19,13 @@ from easylife.transfers import MONTHS_TO_PL, MONTH, get_schema, PLACEHOLDER_MONT
 
 LOG = get_logger(__name__, log_file=LOG_FILE)
 
-USER_DATA_FILE = os.path.join(WORKING_DIR, DEFAULT_USER_FILENAME)
-CONFIG_FILE = os.path.join(WORKING_DIR, "transfers_config")
+# these two below lines are for development convinience
+# USER_DATA_FILE = os.path.join(WORKING_DIR, DEFAULT_USER_FILENAME)
+# CONFIG_FILE = os.path.join(WORKING_DIR, "transfers_config")
+
+USER_DATA_FILE = os.path.join(TOOL_DIR, DEFAULT_USER_FILENAME)
+CONFIG_FILE = os.path.join(TOOL_DIR, "transfers_config")
+
 OK_SHOT = os.path.join(REPORT_DIR, 'transfer_success_' + datetime.datetime.now().isoformat() + ".jpg")
 FAIL_SHOT = os.path.join(REPORT_DIR, 'transfer_error_' + datetime.datetime.now().isoformat() + ".jpg")
 

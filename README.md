@@ -32,12 +32,11 @@ Purpose of the easylife first of all is to **save Your time** and release you fr
 
 # Known problems
 
-**Transfers:** Currently some locators for mbank are out of date, new version will be released soon.
+**Transfers:** None.
 
 # Requirements
 
 - Python 2.7.
-- geckodriver.
 
 # Installation
 
@@ -45,14 +44,6 @@ Install easylife:
 ```
 pip install easylife
 ```
-
-After installation et geckodriver:
-```
-sudo easylife get-geckodriver
-```
-
-If you have already geckodriver add it to PATH system environment or move to:
-`/usr/bin` in case of OSX or Linux system.
 
 # Configuration
 
@@ -65,6 +56,16 @@ e.g.:
 easylife transfers
 ```
 
+Help:
+```
+easylife help
+```
+
+Program and tools version:
+```
+easylife version
+```
+
 # Tools and Scripts
 
 ## Transfers
@@ -75,6 +76,13 @@ Currently supported bank's interfaces:
 - mbank \(Polish version\) **https://www.mbank.pl/indywidualny/**
 
 ### Requirements
+
+Get geckodriver:
+```
+easylife get-geckodriver
+```
+
+If you have already geckodriver you can move or link it with subdir **easylife** of your homedir.
 
 ### Configuration
 
@@ -132,6 +140,6 @@ easylife photo /my_phone_card/video ./my_backup/video /YYYY-MM/NAME remove sourc
 
 # Help and Improvements
 
-If you have found some bugs, errors, something is not working as you want, something is not intuitive or something is missing and can be added or you just simply want to concribute then write to me: janiszewski.m.a@gmail.com.
+If you have found some bugs, errors, something is not working as you want, something is not intuitive or something is missing and can be added or you just simply want to contribute then write to me: janiszewski.m.a@gmail.com.
 Or make issue on GitHub.
 Sometimes I check mails quite rarely but at least once per week ;)

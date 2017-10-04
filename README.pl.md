@@ -8,6 +8,7 @@ Dostępne języki interfejsu użytkownika oraz całego narzędzia **easylife**:
 Wspierane systemy operacyjne:
 - OSX
 - Linux
+- Windows
 
 TOC:
 
@@ -37,12 +38,11 @@ Zadaniem easylife jest więc przede wszystkim **oszczędzać twój czas** oraz u
 
 # Znane problemy
 
-**Przelewy:** Obecnie niektóre lokatory mbanku są nieaktualne, nowa wersja będzie dostępna wkrótce.
+**Przelewy:** Brak.
 
 # Wymagania
 
 - Python 2.7
-- geckodriver
 
 # Instalacja
 
@@ -55,22 +55,11 @@ pip install easylife
 
 Jeżeli masz jakieś problemy z instalacją, upewnij się, że masz najnowszą wersje ```pip```. Jeżeli jej nie masz to uaktualnij według instrukcji ```pip```.
 
-Potrzebujesz również geckodriver. Jeżeli masz już jeden to możesz spróbować go użyć, wystarczy, że będzie dodany do zmiennej systemowej PATH lub przeniesiony do:
-`/usr/bin` dla systemów OSX i Linux.
-
-Jeżeli nie masz geckodriver możesz spróbować doinstalować przez:
-```
-sudo easylife get-geckodriver
-```
-Wymagane są prawa admina ponieważ sterownik zostanie przeniesiony do katalogu `/usr/bin`, który zwykle nie daje dostępu z poziomu zwykłego użytkownika.
-*Jeżeli zobaczysz błąd: **WebDriverException: Message: 'geckodriver' executable needs to be in PATH.** to znaczy, że geckodriver nie jest poprawnie skonfigurowany.*
-
 # Konfiguracja
 
-Narzędzie korzysta z plików konfiguracji oraz różnych plików danych. Pierwsze uruchomienie spowoduje utworzenie pliku konfiguracji danego skryptu w katalogu, z którego został wywołany **easylife**.
+Narzędzie korzysta z plików konfiguracji oraz różnych plików danych. Pierwsze uruchomienie spowoduje utworzenie pliku konfiguracji danego skryptu w katalogu **easylife**, który znajduje się w katalogu domowym użytkownika.
 
-Narazie nie ma możliwości skonfigurowania stałego katalogu dla **easylife**. *Prace w toku.*
-Stwórz sobie jakiś katalog dla danych i odpalaj zawsze tam narzędzie.
+W chwili obecnej nie ma możliwości skonfigurowania stałego katalogu dla **easylife**. *Prace w toku.*
 
 # Uruchomienie
 
@@ -90,12 +79,14 @@ Pomoc:
 easylife help
 ```
 
+Wersja programu i narzedzie:
+```
+easylife version
+```
+
 # Narzędzia i Skrypty
 
 Poniżej znajduje się opis każdego z narzędzi/skryptów zaimplementowanych w **easylife**.
-
-Obecnie dostępne:
-- przelewy
 
 ## Przelewy
 
@@ -126,12 +117,22 @@ Obecnie wspierane interfejsy banków:
     
     Przetestowane przeglądarki:
     - Firefox
+2. Należy zainstalować odpowiedni sterownik dla przeglądarki, np. dla firefox sterownikiem jest geckodriver.
 
-2. Na stronie banku w książce adresowej muszą być zdefiniowani odbiorcy, do których zostaną rozesłane przelewy. Nazwa w książce musi się zgadzać z nazwami przelewów z pól "odbiorca" w pliku danych. Oczywiście w książce musi być zdefiniowany poprawny numer konta bankowego odbiorcy.
+    - Instalacja GeckoDriver dla Firefox:
+    
+        Jeżeli nie masz geckodriver możesz spróbować doinstalować przez:
+        ```
+        easylife get-geckodriver
+        ```
+        Jeżeli posiadasz już jeden to możesz spróbować go użyć przenosząc lub linkując sterownik w subkatalogu **easylife** katalogu domowego.
+        
+        *Jeżeli zobaczysz błąd: **WebDriverException: Message: 'geckodriver' executable needs to be in PATH.** to znaczy, że geckodriver nie jest poprawnie skonfigurowany.*
+3. Na stronie banku w książce adresowej muszą być zdefiniowani odbiorcy, do których zostaną rozesłane przelewy. Nazwa w książce musi się zgadzać z nazwami przelewów z pól "odbiorca" w pliku danych. Oczywiście w książce musi być zdefiniowany poprawny numer konta bankowego odbiorcy.
 
 ### Konfiguracja
 
-Plik konfiguracji ```transfers_config```. W przypadku braku pliku zostanie utworzony nowy z domyślnymi wartościami. Pliki konfiguracyjne są tworzone w katalogu, z którego narzędzie zostało włączone.
+Plik konfiguracji ```transfers_config```. W przypadku braku pliku zostanie utworzony nowy z domyślnymi wartościami. Pliki konfiguracyjne są tworzone w podkatalogu **easylife** katalogu domowego.
 
 Opcje:
 
@@ -296,3 +297,4 @@ Planowane ulepszenia i poprawki:
     - walidacja pół kwot w GUI,
     - wsparcie dla chrome, opera i safari.
     - możliwość oznaczenia w GUI, że przelew został wykonany (wykonano ręcznie bądź z jakiegoś powodu nie został oznaczony przez skrypt).
+    - profile użytkownika pozwalające używać więcej niż jeden plik konfiguracji.

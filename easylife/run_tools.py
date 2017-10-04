@@ -45,14 +45,14 @@ def _get_geckodriver():
         for block in response.iter_content(1024):
             handle.write(block)
 
-    LOG.info("Pobrano.\nRozpakowywanie...")
+    LOG.info("Pobrano. Rozpakowywanie...")
     gecko_file = tarfile.open(gecko_filepath, 'r:gz')
     try:
         gecko_file.extractall(gecko_path)
     finally:
         gecko_file.close()
 
-    LOG.info("Rozpakowano.\nPorządkowanie plików.")
+    LOG.info("Rozpakowano. Porządkowanie plików...")
     os.remove(gecko_filepath)
     # os.rename(os.path.join(gecko_path, "geckodriver"), "/usr/bin/geckodriver")
 

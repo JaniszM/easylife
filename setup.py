@@ -17,7 +17,7 @@ here = path.abspath(path.dirname(__file__))
 
 setup(
     name='easylife',
-    packages=['easylife', 'easylife/transfers'],
+    packages=['easylife', 'easylife/transfers', 'easylife/photo_organizer'],
     version=VERSION,
     description='Group of useful scripts and tools that makes your life easier by doing things for you.'
                 ' Automates same things you can do every day.',
@@ -29,9 +29,10 @@ setup(
     download_url='https://github.com/JaniszM/easylife/tarball/{0}'.format(VERSION),
     install_requires=["selenium==3.4.3",
                       "jsonschema==2.5.1",
-                      "requests==2.12.3"],
+                      "requests==2.12.3",
+                      "exifread==2.1.2"],
     keywords=['easy', 'life', 'shorthand', 'quick', 'script', 'tool', 'useful',
-              'bill', 'transfer', 'bank'],
+              'bill', 'transfer', 'bank', 'photo', 'organizer'],
     classifiers=[
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.0',
