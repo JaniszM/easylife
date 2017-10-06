@@ -285,11 +285,12 @@ Planowane ulepszenia i poprawki:
 
 1. Głowne narzędzie:
 
+    - wersja angielska.
     - możliwość konfiguracji przez użytkownika ścieżki dla danych programu wraz z nazwą pliku danych,
     - konfiguracja ścieżki i nazwy pliku logów oraz zrzutów ekranu,
-    - testy dla pythona 3.0.
+    - testy dla pythona 3.x.
     - unittesty i testy integracyjne.
-    - narzedzie help
+    - ulepszone narzedzie help
 
 2. Narzędzie *Przelewy*:
 
