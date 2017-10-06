@@ -102,7 +102,7 @@ def main():
               "\n\tphoto - organizer zdjęć:"
               "\t\tsyntax: photo [source_dir][destination][template]([remove-source][overwrite-existing]).\n")
     elif tool == "version":
-        print("\neasylife v{0}\ntransfers v{1}\nphoto v{2}\nCopyright 2016 by Marcin Janiszewski,"
+        print("\neasylife v{0}\ntransfers v{1}\nphoto v{2}\nCopyright 2017 by Marcin Janiszewski,"
               " janiszewski.m.a@gmail.com\n".format(VERSION, VERSION_TRASFER, VERSION_PHOTO))
     elif tool == "get-geckodriver":
         _get_geckodriver()

@@ -34,7 +34,10 @@
                     },
                     "kwota": {
                         "description": "Określa domyślną kwotę jaka zostanie wprowadzona automatycznie do okienka danego przelewu.",
-                        "type": "string"
+                        "type": [
+                            "number",
+                            "string"
+                        ]
                     }
                 },
                 "required": [

@@ -177,23 +177,26 @@ Przykład pliku:
         {
             "nazwa": "Mieszkanie czynsz",
             "tytuł": "Czynsz za $MIESIAC_TERAZ",
-            "odbiorca": "Jan Kowalski"
+            "odbiorca": "Jan Kowalski",
+            "kwota": 1200
         },
         {
             "aktywny": false,
             "nazwa": "Mieszkanie pierwsze czynsz",
             "tytuł": "Czynsz za $MIESIAC_POPRZ",
-            "odbiorca": "Marcin Nowak"
+            "odbiorca": "Marcin Nowak",
+            "kwota": "1000"
         }
     ]
 }
 ```
 
 - *nazwa*: (Wymagane) definiuje nazwę przelewu, wyświetlana w GUI.
+- *aktywny*: (Domyślnie: true). Jeżeli ustawione na false to przelew ten nie jest brany pod uwagę. Można w ten sposób wyłączyć stare przelewy.
 - *tytuł*: (Wymagane) definiuje tytuł przelewu, wyświetlany w potwierdzeniu w GUI.
 - *odbiorca*: (Wymagane) definiuje nazwę odbiorcy zdefiniowaną wcześniej w książce adresowej banku, wyświetlany w GUI.
-- *aktywny*: (Domyślnie: true). Jeżeli ustawione na false to przelew ten nie jest brany pod uwagę. Można w ten sposób wyłączyć stare przelewy.
 - *sms*: (Domyślnie: true). Jeżeli ustawione na false to narzędzie nie będzie czekać na potwierdzenie kodem sms przez użytkownika.
+- *kwota*: (Opcjonalne). Domyślna kwota przelewu. Wartość z tego pola zostanie przeniesiona do formularza na interfejsie użytkownika.
 
 W polu *"tytuł"* istnieje możliwość użycia tak zwanych placeholderów. Obecnie dostępne:
 - $MIESIAC_TERAZ: podstawi nazwę obecnego miesiąca.
