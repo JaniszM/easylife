@@ -70,6 +70,8 @@ easylife version
 
 ## Transfers
 
+**[OUTDATED, MBANK UI HAS CHANGED]**
+
 *Tool purpose: pay series of bills by electronic transfers.*
 
 Currently supported bank's interfaces:
