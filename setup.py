@@ -29,7 +29,7 @@ setup(
     download_url='https://github.com/JaniszM/easylife/tarball/{0}'.format(VERSION),
     install_requires=["selenium==3.4.3",
                       "jsonschema==2.5.1",
-                      "requests==2.12.3",
+                      "requests==2.20.0",
                       "exifread==2.1.2"],
     keywords=['easy', 'life', 'tool', 'useful', 'automation', 'shorthand'],
     classifiers=[
