@@ -1,4 +1,4 @@
-selenium==3.4.3
+selenium==4.15.1
 jsonschema==2.5.1
 requests==2.12.3
 exifread==2.1.2
